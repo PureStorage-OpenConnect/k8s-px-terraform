@@ -1,0 +1,51 @@
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "iam:CreateInstanceProfile",
+                "iam:GetPolicyVersion",
+                "iam:ListRoleTags",
+                "iam:UntagRole",
+                "iam:TagRole",
+                "iam:RemoveRoleFromInstanceProfile",
+                "iam:DeletePolicy",
+                "iam:CreateRole",
+                "iam:AttachRolePolicy",
+                "iam:ListInstanceProfileTags",
+                "iam:AddRoleToInstanceProfile",
+                "iam:ListInstanceProfilesForRole",
+                "eks:DescribeNodegroup",
+                "eks:UpdateNodegroupConfig",
+                "iam:PassRole",
+                "iam:DetachRolePolicy",
+                "iam:ListPolicyTags",
+                "iam:ListRolePolicies",
+                "eks:CreateCluster",
+                "iam:ListPolicies",
+                "iam:DeleteInstanceProfile",
+                "iam:GetRole",
+                "iam:GetInstanceProfile",
+                "iam:GetPolicy",
+                "iam:ListRoles",
+                "iam:DeleteRole",
+                "eks:CreateNodegroup",
+                "iam:ListInstanceProfiles",
+                "iam:TagPolicy",
+                "eks:DeleteCluster",
+                "iam:CreatePolicy",
+                "iam:ListPolicyVersions",
+                "eks:DeleteNodegroup",
+                "eks:TagResource",
+                "iam:UntagPolicy",
+                "iam:UntagInstanceProfile",
+                "iam:GetRolePolicy",
+                "iam:DeletePolicyVersion",
+                "iam:TagInstanceProfile"
+            ],
+            "Resource": "*"
+        }
+    ]
+}

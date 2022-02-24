@@ -1,0 +1,29 @@
+kind: StorageCluster
+apiVersion: core.libopenstorage.org/v1
+metadata:
+  name: px-cluster
+  namespace: portworx
+  annotations:
+    portworx.io/is-gke: "true"
+spec:
+  image: portworx/oci-monitor:<storage_cluster_version_replaceme>
+  imagePullPolicy: Always
+  kvdb:
+    internal: true
+  cloudStorage:
+    deviceSpecs:
+    - type=<portworx_cloud_storage_type_replaceme>,size=<portworx_cloud_storage_size_replaceme>
+    kvdbDeviceSpec: type=<kvdb_device_storage_type_replaceme>,size=<kvdb_device_storage_size_replaceme>
+  secretsProvider: k8s
+  stork:
+    enabled: true
+    args:
+      webhook-controller: "false"
+  autopilot:
+    enabled: true
+  monitoring:
+    prometheus:
+      enabled: true
+      exportMetrics: true
+  featureGates:
+    CSI: "true"
