@@ -20,7 +20,16 @@ This repo helps in creating the Kubernetes cluster with Portworx embedded on var
 7. Portworx - valid license and knowledge
 8. [Installation of KubeCtl](https://kubernetes.io/docs/tasks/tools/) (required to manage the Kubernetes cluster)
 
-The installation [shell script](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/master/scripts/prereq.sh) has been shipped in this package. This script will install the above required prerequisites softwares/packages if they are not already installed. The script is tested on MacOS and Ubuntu systems. NOTE: Before running the shell script you must clone the git clone under GIT Repo to be able to access the shell script.
+The installation [shell script](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/master/scripts/prereq.sh) has been shipped in this package. This script will install the above required prerequisites softwares/packages if they are not already installed. The script is tested on MacOS and Ubuntu systems. 
+
+NOTE: Before running the shell script you must clone the git clone under GIT Repo to be able to access the shell script.
+
+To run the shell script you must navigate to the scripts folder and run
+
+``` 
+    commands:
+    ./prereq.sh 
+```
 
 ## GIT Repo
 - Clone this repo for accessing the code, scripts and to create the repo
