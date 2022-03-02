@@ -4,6 +4,7 @@
 .terraform.tfstate.lock.info
 kubeconfig_*
 terraform-live/*
+scripts/keys/
 # .tfstate files
 *.tfstate
 *.tfstate.*

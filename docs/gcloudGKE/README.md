@@ -111,13 +111,13 @@ gcloud_iam_file_location        = "../../../../scripts/keys/px-final-test1-clust
 
 cluster_name                    = "ps-final-test1"
 gke_machine_image               = "UBUNTU_CONTAINERD"
-k8s_version                     = "1.21.6-gke.1500"
-px_operator_version             = "1.6.1"
-px_kvdb_device_storage_type     = "pd-ssd"
-px_kvdb_device_storage_size     = "30"
-px_cloud_storage_size           = "30"
-px_cloud_storage_type           = "pd-ssd"
-px_storage_cluster_version      = "2.9.0"
+k8s_version                     = "1.21.6-gke.1500" // Kubernetes Engine Version
+px_operator_version             = "1.6.1"           // Portworx Operator Version
+px_kvdb_device_storage_type     = "pd-ssd"          // Px KVDB Storage Type on Google Cloud
+px_kvdb_device_storage_size     = "30"              // Px KVDB Storage size
+px_cloud_storage_size           = "30"              // Px Cloud Storage Size
+px_cloud_storage_type           = "pd-ssd"          // Px Cloud Storage type on Google
+px_storage_cluster_version      = "2.9.0"           // Px Storage Cluster Version
 
 ```
 

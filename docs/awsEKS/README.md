@@ -131,14 +131,20 @@ For additional information, you can check the following link here https://docs.a
 
 #### terraform.tfvars
 ```
-region = "us-west-2"`.  // Zone where cluster will be deployed
-number_of_nodes = "3".  // # of nodes
-ec2_instance_type = "c5a.xlarge" // Valid EC2 machine name
-purestorage_aws_keypair = "purestorage-portworks-eks-kp" // AWS Keypair name 
-project_name = "rg_purestorage" // Unique Project name
-cluster_name = "rg_purestorage_demo".  // Unique Cluster Name
-k8s_version = "1.21". 
-px_operator_version = "1.6.1"
+region                       = "us-west-2"  // Zone where cluster will be deployed
+number_of_nodes              = "4"          // # of nodes
+ec2_instance_type            = "c5a.xlarge" // Valid EC2 machine name
+purestorage_aws_keypair      = "purestorage-px-eks-kp" // AWS Keypair name (not the .pem filename)
+project_name                 = "pxProject"  // Unique Project name
+cluster_name                 = "px_demo"    // Unique Cluster Name
+k8s_version                  = "1.21"       // Kubernetes Engine Version
+px_operator_version          = "1.6.1"      // portworx operator version
+
+px_cloud_storage_type        = "gp2"        // aws storage type (gp2 or gp3)
+px_cloud_storage_size        = "30"         // portworx volume size per node
+px_kvdb_device_storage_type  = "gp2"        // aws storage type (gp2 or gp3)
+px_kvdb_device_storage_size  = "40"         // portworx KVDB volume size
+px_storage_cluster_version   = "2.9.0"      // Px Storage Cluster Version
 ```
 
 ### Step 6. Validate and Execute
@@ -152,6 +158,21 @@ terraform apply "plan.out"
 
 This completes the creation of EKS cluster with Portworx, and the output of cluster name is generated.
 Note: A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
+
+
+### Destroy specific resource from terraform
+
+Follow the below steps to apply portworx changes
+
+```
+export AWS_PROFILE=purestorage_aws_dev
+
+For ex:
+terraform destroy target null_resource.install_portworx -auto-approve
+
+terraform plan -out "plan.out"
+terraform apply "plan.out"
+```
 
 ## Cleanup steps:
 
@@ -177,6 +198,14 @@ Step 3: Export desired AWS account profile (Skip if already exported) and then r
 export AWS_PROFILE=purestorage_aws_dev
 terraform destroy -auto-approve
 ```
+
+### Destroy specific resource from terraform:
+
+```
+export AWS_PROFILE=purestorage_aws_dev
+terraform destroy target null_resource.install_portworx -auto-approve
+```
+
 
 Note: the terraform destroy command needs to be executed from the same location as terraform apply command. 
 

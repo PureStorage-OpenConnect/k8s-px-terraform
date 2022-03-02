@@ -21,7 +21,7 @@ resource "null_resource" "install_portworx" {
     interpreter = ["/bin/bash", "-c"]
     working_dir = path.module
   }  
-  depends_on = [module.eks]
+  depends_on = [module.eks, module.vpc]
 }
 resource "null_resource" "remove_portworx" {
   provisioner "local-exec" {
@@ -33,5 +33,5 @@ resource "null_resource" "remove_portworx" {
     interpreter = ["/bin/bash", "-c"]
     working_dir = path.module
   }
-  depends_on = [module.eks]
+  depends_on = [module.eks, module.vpc, null_resource.install_portworx]
 }
