@@ -95,10 +95,10 @@ Only Admins can execute and create the new "User" Group with all custom polices 
 
 ./setup_env.sh aws 1234567 global
 
-terraform init
-terraform validate
-terraform plan -out "plan.out"
-terraform apply "plan.out"
+    terraform init
+    terraform validate
+    terraform plan -out "plan.out"
+    terraform apply "plan.out"
 
 ```
 
