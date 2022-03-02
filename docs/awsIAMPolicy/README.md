@@ -99,10 +99,10 @@ Only Admins can execute and create the new "User" Group with all custom polices 
     terraform validate
     terraform plan -out "plan.out"
     terraform apply "plan.out"
+    
+Note: If Error mentions policy already exists, that error can be ignored as the policy has already been created by the user.
 
 ```
-
-Note: If Error mentions policy already exists, that error maybe ignored as the policy has already been created by the user.
 
 If you want to create manually from UI:
 
