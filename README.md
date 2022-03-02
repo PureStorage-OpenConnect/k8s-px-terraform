@@ -27,14 +27,12 @@ NOTE: Before running the shell script you must clone the git clone under GIT Rep
 To run the shell script you must navigate to the scripts folder and run
 
 ``` 
-    commands:
     ./prereq.sh 
 ```
 
 ## GIT Repo
 - Clone this repo for accessing the code, scripts and to create the repo
 ``` 
-    commands:
     git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git
 ```
 
