@@ -19,10 +19,6 @@ variable "number_of_nodes" {
    description = "Enter number of nodes you want to run for this Node in the EKS cluster"
 }
 
-variable "project_name" {
-   description = "Enter the project name"
-}
-
 variable "cluster_name" {
    description = "Enter the cluster name"
 }
