@@ -134,7 +134,7 @@ For additional information, you can check the following link here https://docs.a
 region = "us-west-2"`.  // Zone where cluster will be deployed
 number_of_nodes = "3".  // # of nodes
 ec2_instance_type = "c5a.xlarge" // Valid EC2 machine name
-purestorage_aws_keypair = "purestorage-portworks-eks-kp" // AWS Keypair name 
+purestorage_aws_keypair = "purestorage-portworks-eks-kp" // AWS Keypair name (not the .pem extension)
 project_name = "rg_purestorage" // Unique Project name
 cluster_name = "rg_purestorage_demo".  // Unique Cluster Name
 k8s_version = "1.21". 
