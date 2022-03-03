@@ -178,7 +178,7 @@ This completes the creation of EKS cluster with Portworx, and the output of clus
 	PX_NS_AND_POD=$(kubectl --kubeconfig=kube-config-file get pods --no-headers -l name=portworx --all-namespaces -o jsonpath='{.items[*].metadata.ownerReferences[?(@.kind=="StorageCluster")]..name}' -o custom-columns="Col-1:metadata.namespace,Col-2:metadata.name" | head -1)
 	kubectl --kubeconfig=kube-config-file exec -n $PX_NS_AND_POD -c portworx -- /opt/pwx/bin/pxctl status
 
-### Destroy specific resource from terraform
+### How to Apply Portworx Parameter Changes (Re-creates Portworx)
 
 Follow the below steps to apply portworx changes
 
