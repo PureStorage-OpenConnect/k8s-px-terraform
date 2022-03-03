@@ -151,6 +151,18 @@ This completes the creation of GKE cluster with Portworx, and the output of clus
 
 	PX_NS_AND_POD=$(kubectl --kubeconfig=kube-config-file get pods --no-headers -l name=portworx --all-namespaces -o jsonpath='{.items[*].metadata.ownerReferences[?(@.kind=="StorageCluster")]..name}' -o custom-columns="Col-1:metadata.namespace,Col-2:metadata.name" | head -1)
 	kubectl --kubeconfig=kube-config-file exec -n $PX_NS_AND_POD -c portworx -- /opt/pwx/bin/pxctl status
+	
+### How to Apply Portworx Parameter Changes (Re-creates Portworx)
+
+Follow the below steps to apply portworx changes. Modify Terraform.tfvars to accommodate the new changes.
+
+```
+For ex:
+terraform destroy target null_resource.install_portworx -auto-approve
+
+terraform plan -out "plan.out"
+terraform apply "plan.out"
+```
     
 ## Cleanup steps:
 Step 1: 
@@ -175,6 +187,14 @@ Step 3: Google Cloud auth
 Authenticate to Google Cloud with account provisioned the GKE cluster
 ```
 terraform destroy -auto-approve
+```
+### Destroy specific resource from terraform:
+
+```
+terraform destroy target <null_resource.install_portworx> -auto-approve
+
+The Terraform state resource list can be found with the following command
+	terraform state list
 ```
 
 Note: the terraform destroy command needs to be executed from the same location as terraform apply command. 
