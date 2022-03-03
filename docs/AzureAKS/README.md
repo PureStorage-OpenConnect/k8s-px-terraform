@@ -126,6 +126,23 @@ The following two files are generated:
 For extra reference you can also take a look at the Microsoft Docs: [here](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/aks/kubernetes-service-principal.md) </br>
 ```
 
+
+###  Step 7. Check if everything is up and ready:
+
+**To check nodes:**
+
+	kubectl --kubeconfig=kube-config-file get nodes                          
+
+**To check portworx pods:**
+
+	kubectl --kubeconfig=kube-config-file get pods -n portworx 
+
+**To check portworx cluster status:**
+
+	PX_NS_AND_POD=$(kubectl --kubeconfig=kube-config-file get pods --no-headers -l name=portworx --all-namespaces -o jsonpath='{.items[*].metadata.ownerReferences[?(@.kind=="StorageCluster")]..name}' -o custom-columns="Col-1:metadata.namespace,Col-2:metadata.name" | head -1)
+	kubectl --kubeconfig=kube-config-file exec -n $PX_NS_AND_POD -c portworx -- /opt/pwx/bin/pxctl status
+
+   
 ## Troubleshooting/Known Issues:
 
 ### if your SP key is invalid, generate a new one:
