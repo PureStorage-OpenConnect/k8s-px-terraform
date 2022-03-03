@@ -180,10 +180,10 @@ This completes the creation of EKS cluster with Portworx, and the output of clus
 
 ### How to Apply Portworx Parameter Changes (Re-creates Portworx)
 
-Follow the below steps to apply portworx changes
+Follow the below steps to apply portworx changes. Modify Terraform.tfvars to accommodate the new changes.
 
 ```
-export AWS_PROFILE=purestorage_aws_dev
+export AWS_PROFILE=<purestorage_aws_dev>
 
 For ex:
 terraform destroy target null_resource.install_portworx -auto-approve
