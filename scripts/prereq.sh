@@ -11,6 +11,8 @@ display_help() {
   exit 1
 }
 
+source ~/.bashrc
+
 if [[ "$(uname -s)" == Linux ]]; then
   vRETURN=$(grep "^NAME=" /etc/os-release| cut -f2 -d"=")
   if [[ ${vRETURN} == '"CentOS Linux"' ]]; then
@@ -22,8 +24,7 @@ if [[ "$(uname -s)" == Linux ]]; then
     exit 1;
   fi
 elif [[ "$(uname -s)" == Darwin ]]; then 
-  echo 'Installing basic tools -- on Darwin (MacOS) -->'
-  brew install zip curl wget
+  echo 'Darwin (MacOS) Detected.'
 else
   echo -e "Unsupported operating system. Currenty MAC and Linux (CentOS, Ubuntu) are supported."
   exit 1;
