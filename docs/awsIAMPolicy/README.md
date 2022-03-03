@@ -55,8 +55,10 @@ Export AWS profile by pointing to the desired account.
 
 ```
 export AWS_PROFILE=<purestorage_dev> -- Please ensure that this entry exists in the ~/.aws/credentials file
-
+```
 Test connectivity: 
+
+```
 aws s3 ls
 
 ```
@@ -68,7 +70,7 @@ This profile is going to be used for creating the EKS Cluster
 NOTE: This same keys are also used to provision portworx storage as well
 
 
-### 4. Navigate to scripts folder and Run setup_env.sh <param1> <param2> <param3>
+### Step 4. Navigate to scripts folder and Run setup_env.sh <param1> <param2> <param3>
 
 ```
 ./setup_env.sh <Provider> <UniqueIdForCluster> <ZoneName>
@@ -82,8 +84,9 @@ The first parameter in this scenario has to be "aws"
 The second parameter is used just for readability
 The third parameter has to be "global"
 
+```
 
-## Step 5: AWS IAM Permissions
+### Step 5: AWS IAM Permissions
 
 Only Admins can execute and create the new "User" Group with all custom polices and AWS managed polices assocaited
 
@@ -91,18 +94,15 @@ Only Admins can execute and create the new "User" Group with all custom polices 
 ***** NOTE: Users needs to be assigned manually to this newly created group *****
 
 ```
-
-
 ./setup_env.sh aws 1234567 global
 
     terraform init
     terraform validate
     terraform plan -out "plan.out"
     terraform apply "plan.out"
+```
     
 Note: If Error mentions policy already exists, that error can be ignored as the policy has already been created by the user.
-
-```
 
 If you want to create manually from UI:
 
@@ -122,11 +122,7 @@ AmazonEKSFargatePodExecutionRolePolicy
 AmazonEKSVPCResourceController
 ```
 
-
 This completes the creation of IAM Groups with required policies
-
-
-
 
 ## Cleanup steps:
 
