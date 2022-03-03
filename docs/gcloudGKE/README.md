@@ -103,15 +103,15 @@ drwxr-xr-x  8 t_gadar  staff   256 Jan 24 23:01 .
 Use vi or nano to edit terraform.tfvars file. To execute usng nano as a file editor you can use the command: `nano terraform.tfvars`
 
 ```	
-google_cloud_project_id         = "px_project"
-google_region                   = "us-central1"  //for VPC only
-google_zone                     = "us-central1-a" //If you provide region here, GKE will try create nodes in each zone - Multiplied by 3
-number_of_nodes                 = "3"
+google_cloud_project_id         = "px_project"       
+google_region                   = "us-central1"      // For VPC only
+google_zone                     = "us-central1-a"    // If you provide region here, GKE will try create nodes in each zone - Multiplied by 3
+number_of_nodes                 = "3"                // # of nodes. Minimum of 3 nodes are required
 gke_machine_type                = "e2-standard-2"
 compute_engine_service_account  = "portworx-gke-cloud-operations@px-final-test1.iam.gserviceaccount.com"
-gcloud_iam_file_location        = "../../../../scripts/keys/px-final-test1-cluster-ops.json"
+gcloud_iam_file_location        = "../../../../scripts/keys/px-final-test1-cluster-ops.json" //Location to your .json credentials file
 
-cluster_name                    = "ps-final-test1"
+cluster_name                    = "ps-final-test1"  // Define your own unique cluster name
 gke_machine_image               = "UBUNTU_CONTAINERD"
 k8s_version                     = "1.21.6-gke.1500" // Kubernetes Engine Version
 px_operator_version             = "1.6.1"           // Portworx Operator Version
