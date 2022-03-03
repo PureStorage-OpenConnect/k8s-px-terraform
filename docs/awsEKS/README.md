@@ -80,7 +80,9 @@ The three parameters:
 3. Zone : AWS availability zone - in which cluster will be provisioned
 
  aws example:
- ~/purestorage/terraform-iac/scripts (master) ⚡ :./setup_env.sh aws 8521456 us-west-2
+ ~/purestorage/terraform-iac/scripts (master) ⚡ :./setup_env.sh aws <UniqueIdForCluster> us-west-2
+	
+As a best practice (AWS account name or id) should be used for <UniqueIdForCluster>
   
 ```
 
