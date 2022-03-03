@@ -220,8 +220,11 @@ terraform destroy -auto-approve
 ### Destroy specific resource from terraform:
 
 ```
-export AWS_PROFILE=purestorage_aws_dev
-terraform destroy target null_resource.install_portworx -auto-approve
+export AWS_PROFILE=<purestorage_aws_dev>
+terraform destroy target <null_resource.install_portworx> -auto-approve
+
+The Terraform state resource list can be found with the following command
+	terraform state list
 ```
 
 
