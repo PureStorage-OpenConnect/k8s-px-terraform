@@ -100,7 +100,9 @@ drwxr-xr-x  8 t_gadar  staff   256 Jan 24 23:01 .
 
 ### 5. Configure terraform.tfvars [parameters]
 
-```
+Use vi or nano to edit terraform.tfvars file. To execute usng nano as a file editor you can use the command: nano terraform.tfvars
+
+```	
 google_cloud_project_id         = "px_project"
 google_region                   = "us-central1"  //for VPC only
 google_zone                     = "us-central1-a" //If you provide region here, GKE will try create nodes in each zone - Multiplied by 3
