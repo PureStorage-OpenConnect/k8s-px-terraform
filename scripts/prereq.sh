@@ -11,14 +11,52 @@ display_help() {
   exit 1
 }
 
+if [[ "$(uname -s)" == Linux ]]; then
+  vRETURN=$(grep "^NAME=" /etc/os-release| cut -f2 -d"=")
+  if [[ ${vRETURN} == '"CentOS Linux"' ]]; then
+    LINUX_DISRO="CENTOS"
+  elif [[ ${vRETURN} == '"Ubuntu"' ]]; then
+    LINUX_DISRO="UBUNTU"
+  else
+    echo -e "Unsupported Linux Distribution. Currenty CentOS and Ubuntu are supported. \nPlease install all the tools as per the documentation for your linux distribution"
+    exit 1;
+  fi
+elif [[ "$(uname -s)" == Darwin ]]; then 
+  echo 'Installing basic tools -- on Darwin (MacOS) -->'
+  brew install zip curl wget
+else
+  echo -e "Unsupported operating system. Currenty MAC and Linux (CentOS, Ubuntu) are supported."
+  exit 1;
+fi
+
+installBasicUtils() {
+  if [[ "$(uname -s)" == Linux ]]; then
+    if [[ "${LINUX_DISRO}" == "CENTOS" ]]; then
+      echo "Installing basic tools -- on Linux OS (CentOS)--> "
+      sudo yum check-update
+      sudo yum install unzip curl wget git -qy
+    else
+      echo "Installing basic tools -- on Linux OS (Ubuntu)--> "
+      sudo apt-get update;
+      sudo apt-get install unzip curl wget git -qy
+    fi
+  elif [[ "$(uname -s)" == Darwin ]]; then 
+    echo 'Installing basic tools -- on Darwin (MacOS) -->'
+    brew install unzip curl wget git
+  fi
+  echo 'Installing basic tools completed.'
+}
+
 installGoogleSDK() {
   echo 'checking gcloud sdk version'
   if ! gcloud version; then
-  #if [[ "$?" -ne 0 ]]; then
-    //The following call applies to MacOS and Linux per documentation
-    echo 'Installing Cloud SDK'
-    curl https://sdk.cloud.google.com > install.sh
-    bash install.sh --disable-prompts
+    #The following call applies to MacOS and Linux per documentation
+    echo 'Installing G-Cloud SDK'
+    mv ~/google-cloud-sdk ~/google-cloud-sdk_old 2>/dev/null
+    curl https://sdk.cloud.google.com > /tmp/install.sh
+    bash /tmp/install.sh --disable-prompts --install-dir=~/google-cloud-sdk
+    echo "source ~/google-cloud-sdk/google-cloud-sdk/completion.bash.inc" >> ~/.bashrc
+    echo "source ~/google-cloud-sdk/google-cloud-sdk/path.bash.inc" >> ~/.bashrc
     echo 'Google Cloud SDK Installation completed'
   else
     echo "Gcloud SDK found.. no updates are made.."
@@ -28,16 +66,15 @@ installGoogleSDK() {
 installAWSCli() {
   echo 'Checking AWS version...'
   if ! aws --version; then
-  #if [[ "$?" -ne 0 ]]; then
     if [[ "$(uname -s)" == Darwin ]]; then 
       echo 'Installing AWSCli - on Darwin (MacOS) -->'
       /usr/bin/ruby -e “$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/master/install)”
       brew install awscli
     elif [[ "$(uname -s)" == Linux ]]; then
       echo "Installing AWS -- on Linux OS --> "
-      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-      unzip awscliv2.zip
-      sudo ./aws/install
+      curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "/tmp/awscliv2.zip"
+      unzip /tmp/awscliv2.zip -d /tmp/
+      sudo /tmp/aws/install
     fi
     echo 'AWSCli Installation completed'
   else
@@ -47,14 +84,13 @@ installAWSCli() {
 
 installTerraform() {
   if ! terraform -version; then
-  #if [[ "$?" -ne 0 ]]; then
     echo "Terraform not found.. installing now.."
     if [[ "$(uname -s)" == Darwin ]]; then 
       wget -q -O/tmp/terraform.zip https://releases.hashicorp.com/terraform/1.1.4/terraform_1.1.4_darwin_amd64.zip
     elif [[ "$(uname -s)" == Linux ]]; then
       wget -q -O/tmp/terraform.zip https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip 
     fi
-    unzip -q -d /usr/local/bin /tmp/terraform.zip 
+    sudo unzip -q -d /usr/local/bin /tmp/terraform.zip 
     rm /tmp/terraform.zip
     echo 'Terrafrom installation completed'
   else
@@ -65,10 +101,21 @@ installTerraform() {
 installAzureCLI() {
   echo 'Checking Azure version...'
   if ! az version; then
-  #if [[ "$?" -ne 0 ]]; then
     if [[ "$(uname -s)" == Linux ]]; then
-      echo 'Installing AzureCLI - on Linux (OS)'
-      curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      if [[ "${LINUX_DISRO}" == "CENTOS" ]]; then
+        echo 'Installing AzureCLI - on Linux (CentOS)'
+        sudo rpm --import https://packages.microsoft.com/keys/microsoft.asc
+        echo -e "[azure-cli]
+name=Azure CLI
+baseurl=https://packages.microsoft.com/yumrepos/azure-cli
+enabled=1
+gpgcheck=1
+gpgkey=https://packages.microsoft.com/keys/microsoft.asc" | sudo tee /etc/yum.repos.d/azure-cli.repo
+        sudo yum install azure-cli -qy
+      else
+        echo 'Installing AzureCLI - on Linux (Ubuntu)'
+        curl -sL https://aka.ms/InstallAzureCLIDeb | sudo bash
+      fi
     elif [[ "$(uname -s)" == Darwin ]]; then 
       echo 'Installing AzureCLI - on Darwin (MacOS)'
       brew update && brew install azure-cli
@@ -84,15 +131,15 @@ installDocker() {
   if ! docker -v; then
     if [[ "$(uname -s)" == Linux ]]; then
       # Install Docker
-      export DEBIAN_FRONTEND=noninteractive
-      sudo apt-get update -qy
-      sudo apt-get install apt-transport-https ca-certificates curl software-properties-common gnupg -qy
-      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
-      sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu focal stable" -y
-      sudo apt-get update -qy
-      DOCKER_VERSION=$(sudo apt-cache madison docker-ce | grep '19.03.13' | awk '{print $3}')
-      sudo apt-get install docker-ce="$DOCKER_VERSION" -qy
-      sudo usermod -aG docker "$USER"
+      if [[ "${LINUX_DISRO}" == "UBUNTU" ]]; then
+        sudo apt-get install -y uidmap
+      fi
+      curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
+      sudo sh /tmp/get-docker.sh
+      echo "user.max_user_namespaces = 28633" | sudo tee -a /etc/sysctl.d/51-rootless.conf
+      sudo sysctl --system
+      dockerd-rootless-setuptool.sh install
+      echo "export DOCKER_HOST=unix:///run/user/$(id -ru)/docker.sock" >> ~/.bashrc
     elif [[ "$(uname -s)" == Darwin ]]; then 
       echo "Docker not found.. installing now on Darwin (MacOS).."
       curl -fsSL https://get.docker.com -o get-docker.sh
@@ -106,37 +153,33 @@ installDocker() {
 
 installGIT() {
   echo 'Checking GIT version'
-#  git -version
-#  if [[ "$?" -ne 0 ]]; then
   if ! git --version; then
-    if [[ "$(uname -s)" == Linux ]]; then
-      echo "GIT not found.. installing now.."
-      sudo apt-get install git
-    elif [[ "$(uname -s)" == Darwin ]]; then 
+    echo 'GIT not found.. installing now on Darwin (MacOS)...'
+    if [[ "$(uname -s)" == Darwin ]]; then 
       brew install git
     fi
-    echo 'GIT Installation is completed...'
   else
-    echo 'GIT found.. no updates are made'
+    echo 'GIT found. no updates are made'
   fi
 }
 
 installKubeCTL() {
   echo 'Checking KubeCTL version'
-  
-  if ! kubectl version --client=true; then
+    if ! kubectl version --client=true; then
+    echo "KubeCTL not found.. installing now.."
     if [[ "$(uname -s)" == Linux ]]; then
-      echo "KubeCTL not found.. installing now.."
-        brew install kubectl   
-      echo 'KubeCTL Installation is completed...'
+      curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /tmp/kubectl
+      sudo install -o root -g root -m 0755 /tmp/kubectl /usr/local/bin/kubectl
     elif [[ "$(uname -s)" == Darwin ]]; then 
       brew install git
     fi
-    echo 'GIT Installation is completed...'
+    echo 'KubeCTL Installation is completed...'
   else
     echo 'KubeCTL found.. no updates are made'
   fi
 }
+
+source ~/.bashrc
 
 checkRqdAppsAndVars() {
   #Check required Apps - 
@@ -191,17 +234,17 @@ checkRqdAppsAndVars() {
 
 ARG1=$1
 
-if [[ $ARG1 = "help"  ]];
-then
+if [[ $ARG1 = "help"  ]]; then
     display_help
-elif [[ $ARG1 = "check" ]];
-then
+elif [[ $ARG1 = "check" ]]; then
   checkRqdAppsAndVars
   exit 0;
 fi
 
 
 echo "$(date) - Cloud Environment chosen is : ${CLOUD_ENV}"
+echo ''
+installBasicUtils
 echo ''
 installTerraform
 echo ''
@@ -218,3 +261,5 @@ echo ''
 installKubeCTL
 
 echo "$(date) - Script completed successfully"
+
+echo -e "\n\n\n$(date) - To make sure all the tools are available, run following command:\n\nsource ~/.bashrc"
