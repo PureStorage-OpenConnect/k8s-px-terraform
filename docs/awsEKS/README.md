@@ -82,7 +82,7 @@ The three parameters:
  aws example:
  ~/purestorage/terraform-iac/scripts (master) ⚡ :./setup_env.sh aws <UniqueIdForCluster> us-west-2
 	
-As a best practice (AWS account name or id) should be used for <UniqueIdForCluster>
+As a best practice (AWS account name or id) should be used for <UniqueIdForCluster> This ID is for users to differentiate accounts, the scripts will not validate them.
   
 ```
 
