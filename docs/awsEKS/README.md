@@ -157,8 +157,24 @@ terraform apply "plan.out"
 ```
 
 This completes the creation of EKS cluster with Portworx, and the output of cluster name is generated.
-Note: A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
 
+> Note: A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
+
+
+###  Step 7. Check if everything is up and ready:
+
+**To check nodes:**
+
+	kubectl --kubeconfig=kube-config-file get nodes                          
+
+**To check portworx pods:**
+
+	kubectl --kubeconfig=kube-config-file get pods -n portworx 
+
+**To check portworx cluster status:**
+
+	PX_NS_AND_POD=$(kubectl --kubeconfig=kube-config-file get pods --no-headers -l name=portworx --all-namespaces -o jsonpath='{.items[*].metadata.ownerReferences[?(@.kind=="StorageCluster")]..name}' -o custom-columns="Col-1:metadata.namespace,Col-2:metadata.name" | head -1)
+	kubectl --kubeconfig=kube-config-file exec -n $PX_NS_AND_POD -c portworx -- /opt/pwx/bin/pxctl status
 
 ### Destroy specific resource from terraform
 
