@@ -94,7 +94,7 @@ Only Admins can execute and create the new "User" Group with all custom polices 
 ***** NOTE: Users needs to be assigned manually to this newly created group *****
 
 ```
-./setup_env.sh aws 1234567 global
+./setup_env.sh aws <AccountNumberOrRandomString> global
 
     terraform init
     terraform validate
