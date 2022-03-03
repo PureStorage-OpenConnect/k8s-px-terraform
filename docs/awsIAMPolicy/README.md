@@ -1,6 +1,7 @@
 # Step by Step Guide to install AWS IAM Group with Permssions to create EKS cluster
 > Note: The IAM policy can be only created with "Admin" role. This step needs to be executed only once per account by the admin.
 
+## Automation Steps for IAM Policy
 
 ### Step 1. Install required software(s)
 
@@ -104,7 +105,8 @@ Only Admins can execute and create the new "User" Group with all custom polices 
     
 Note: If Error mentions policy already exists, that error can be ignored as the policy has already been created by the user.
 
-If you want to create manually from UI:
+    
+## Manual Steps for IAM Policy
 
 Login to AWS console, Navigate to IAM 
 
