@@ -11,7 +11,7 @@
 
 ## Step 1. Installation of required software
 
-This repo contains scripts/prereq.sh file that will install all the required softwares based on the OS (tested on MacOS and Ubuntu)
+This repo contains scripts/prereq.sh file that will install all the required softwares based on the OS (tested on Linux (CentOS, Ubuntu) and MacOS)
 
 Upon running the script the following software/tools will be installed that is required to create AKS cluster
 
