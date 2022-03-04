@@ -125,6 +125,12 @@ px_storage_cluster_version      = "2.9.0"           // Px Storage Cluster Versio
 
 ### 6. Execute
 
+> Note: Terraform will use default VPC available in your account. If you want to create new VPC, rename the 'vpc.bkp' to 'vpc.tf' and uncomment the following lines in `gke.tf` file:
+
+    #network                  = google_compute_network.vpc.name
+    #subnetwork               = google_compute_subnetwork.subnet.name
+
+
 ```
 terraform init
 terraform validate
@@ -135,7 +141,6 @@ terraform apply "plan.out"
 This completes the creation of GKE cluster with Portworx, and the output of cluster name is generated.
 
 > Note: A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
-
 
 ###  Step 7. Check if everything is up and ready:
 
