@@ -130,7 +130,7 @@ px_storage_cluster_version      = "2.9.0"           // Px Storage Cluster Versio
     #network                  = google_compute_network.vpc.name
     #subnetwork               = google_compute_subnetwork.subnet.name
 
-
+Run the following Terraform commands to start the process:
 ```
 terraform init
 terraform validate
