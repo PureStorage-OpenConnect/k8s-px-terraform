@@ -166,6 +166,18 @@ cp ~/.kube/config .
 
 ```
 
+### How to Apply Portworx Parameter Changes (Re-creates Portworx)
+
+Follow the below steps to apply portworx changes. Modify Terraform.tfvars to accommodate the new changes.
+
+```
+For ex:
+terraform destroy target null_resource.install_portworx -auto-approve
+
+terraform plan -out "plan.out"
+terraform apply "plan.out"
+```
+
 ## Clean up 
 
 Step 1: 
@@ -193,3 +205,13 @@ az group delete -n $RESOURCEGROUP
 az ad sp delete --id $SERVICE_PRINCIPAL
 
 ```
+### Destroy specific resource from terraform:
+
+```
+terraform destroy target <null_resource.install_portworx> -auto-approve
+
+The Terraform state resource list can be found with the following command
+	terraform state list
+```
+
+Note: the terraform destroy command needs to be executed from the same location as terraform apply command. 
