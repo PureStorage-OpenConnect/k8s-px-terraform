@@ -28,28 +28,16 @@ mkdir -p -m 700 "$FOLDER"
 echo ""
 echo "The service account key files will live in $FOLDER/"
 
-# CONNECT='portworx-gke-connect'
-# REGISTER='portworx-gke-register'
 CLOUDOPS='portworx-gke-cloud-operations'
-SUPERADMIN='portworx-gke-super-admin'
 
 #create the needed service accounts
-# gcloud iam service-accounts create $CONNECT --project $PROJECT
-# gcloud iam service-accounts create $REGISTER --project $PROJECT
 gcloud iam service-accounts create $CLOUDOPS --project $PROJECT
-gcloud iam service-accounts create $SUPERADMIN --project $PROJECT
 
 #create the needed keys
-#gcloud iam service-accounts keys create "$FOLDER"/gcr.json --iam-account  $GCR_SA_EMAIL
-# gcloud iam service-accounts keys create "$FOLDER"/register.json --iam-account $REGISTER@$PROJECT.iam.gserviceaccount.com
-# gcloud iam service-accounts keys create "$FOLDER"/connect.json --iam-account $CONNECT@$PROJECT.iam.gserviceaccount.com
 gcloud iam service-accounts keys create "$FOLDER"/"$PROJECT"-cluster-ops.json --iam-account $CLOUDOPS@$PROJECT.iam.gserviceaccount.com
-gcloud iam service-accounts keys create "$FOLDER"/"$PROJECT"-super-admin.json --iam-account $SUPERADMIN@$PROJECT.iam.gserviceaccount.com
 
 
 #assign the needed IAM roles
-# gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$CONNECT@$PROJECT.iam.gserviceaccount.com" --role='roles/gkehub.connect'
-# gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$REGISTER@$PROJECT.iam.gserviceaccount.com" --role='roles/gkehub.admin'
 gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$CLOUDOPS@$PROJECT.iam.gserviceaccount.com" --role='roles/logging.logWriter'
 gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$CLOUDOPS@$PROJECT.iam.gserviceaccount.com" --role='roles/monitoring.metricWriter'
 gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$CLOUDOPS@$PROJECT.iam.gserviceaccount.com" --role='roles/stackdriver.resourceMetadata.writer'
@@ -59,11 +47,6 @@ gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$CLOUDO
 gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$CLOUDOPS@$PROJECT.iam.gserviceaccount.com" --role='roles/iam.serviceAccountTokenCreator'
 gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$CLOUDOPS@$PROJECT.iam.gserviceaccount.com" --role='roles/iam.serviceAccountUser'
 gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$CLOUDOPS@$PROJECT.iam.gserviceaccount.com" --role='roles/resourcemanager.projectIamAdmin'
-gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$SUPERADMIN@$PROJECT.iam.gserviceaccount.com" --role='roles/iam.serviceAccountAdmin'
-gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$SUPERADMIN@$PROJECT.iam.gserviceaccount.com" --role='roles/iam.serviceAccountKeyAdmin'
-gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$SUPERADMIN@$PROJECT.iam.gserviceaccount.com" --role='roles/resourcemanager.projectIamAdmin'
-gcloud projects add-iam-policy-binding $PROJECT --member="serviceAccount:$SUPERADMIN@$PROJECT.iam.gserviceaccount.com" --role='roles/editor'
-
 
 gcloud beta billing projects link $PROJECT --billing-account $GCloud_Billing_ID
 
