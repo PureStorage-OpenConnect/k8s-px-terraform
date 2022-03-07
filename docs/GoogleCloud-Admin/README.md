@@ -39,6 +39,9 @@ Reference to the log file during one of the setup run: https://raw.githubusercon
 
 The below script will ask for billing id and project id. Both of these can be found from the Google console. See image 1 and image 2.
 
+![Location of billing id] (https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/main/docs/GoogleCloud-Admin/gcp1.JPG)
+![Location of project id] (https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/main/docs/GoogleCloud-Admin/gcp2.JPG)
+
 ```
 ./setup_gcp_project.sh
 ```
@@ -53,3 +56,4 @@ drwxr-xr-x  22 t_gadar  staff   704 Mar  4 09:22 ..
 drwx------   3 t_gadar  staff    96 Mar  6 18:39 .
  ~/purestorage/terraform-iac/scripts/keys  on master ! :                                               
  ```
+![alt text] (https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/main/docs/GoogleCloud-Admin/gcp3.JPG "Service account with permissions") 
