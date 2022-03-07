@@ -38,7 +38,7 @@ To run the shell script you must navigate to the scripts folder and run
 
 ## Guides to install Kubernetes with Portworx
 
-- [AWS IAM Policy provisioning Guide](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/master/docs/awsIAMPolicy/README.md)
+- [AWS IAM Policy provisioning Guide](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/master/docs/aws-admin/README.md)
 - [AWS Kubenetes + Portworx Setup Guide](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/master/docs/awsEKS/README.md)
 - [Google Kubernetes + Portworx Setup Guide](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/master/docs/gcloudGKE/README.md)
 - [Azure Kubernetes + Portworx Setup Guide](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/master/docs/AzureAKS/README.md)

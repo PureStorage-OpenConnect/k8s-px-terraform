@@ -1,7 +1,7 @@
 # Step by Step Guide to install AWS EKS with Portworx
 
 ## PreRequisite:
-1. Please see docs/awsIAMPolicy/README.md for instruction on provisioning the IAM policies required for creating the cluster
+1. Please see docs/aws-admin/README.md for instruction on provisioning the IAM policies required for creating the cluster
    
 2. Ensure the IAM with the required permissions has been provisioned by the admin
    
