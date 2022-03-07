@@ -1,0 +1,941 @@
+bash-3.2$ ./setup_gcp_project.sh 
+This script will help you perform the steps outlined at
+https://cloud.google.com/iam/docs/service-accounts
+
+Creates portworx-gke-cloud-operations and portworx-gke-super-admin service-accounts and provides the JSONs
+
+Enter the billing account to be assocaited for the new project :
+(example: 012345-B765432B-169316):0097E7-D4D264-463333
+Welcome! This command will take you through the configuration of gcloud.
+
+Settings from your current configuration [default] are:
+core:
+  account: broychoudhury@purestorage.com
+  disable_usage_reporting: 'False'
+  project: gcp-flashblade-286121
+
+Pick configuration to use:
+ [1] Re-initialize this configuration [default] with new settings 
+ [2] Create a new configuration
+Please enter your numeric choice:  1
+
+Your current configuration has been set to: [default]
+
+You can skip diagnostics next time by using the following flag:
+  gcloud init --skip-diagnostics
+
+Network diagnostic detects and fixes local network connection issues.
+Checking network connection...done.                                                                                              
+Reachability Check passed.
+Network diagnostic passed (1/1 checks passed).
+
+Choose the account you would like to use to perform operations for this configuration:
+ [1] broychoudhury@purestorage.com
+ [2] Log in with a new account
+Please enter your numeric choice:  1
+
+You are logged in as: [broychoudhury@purestorage.com].
+
+This account has a lot of projects! Listing them all can take a while.
+ [1] Enter a project ID
+ [2] Create a new project
+ [3] List projects
+Please enter your numeric choice:  1
+
+Enter project ID you would like to use:  gcp-flashblade-286121
+Your current project has been set to: [gcp-flashblade-286121].
+
+Do you want to configure a default Compute Region and Zone? (Y/n)?  n
+
+Your Google Cloud SDK is configured and ready to use!
+
+* Commands that require authentication will use broychoudhury@purestorage.com by default
+* Commands will reference project `gcp-flashblade-286121` by default
+Run `gcloud help config` to learn how to change individual settings
+
+This gcloud configuration is called [default]. You can create additional configurations if you work with multiple accounts and/or projects.
+Run `gcloud topic configurations` to learn more.
+
+Some things to try next:
+
+* Run `gcloud --help` to see the Cloud Platform services you can interact with. And run `gcloud help COMMAND` to get help on any gcloud command.
+* Run `gcloud topic --help` to learn about advanced features of the SDK like arg files and output formatting
+* Run `gcloud cheat-sheet` to see a roster of go-to `gcloud` commands.
+
+The service account key files will live in ./keys/
+Created service account [portworx-gke-cloud-operations].
+Created service account [portworx-gke-super-admin].
+created key [1702b066530edcb12b75c846d9c28d668ae4d688] of type [json] as [./keys/gcp-flashblade-286121-cluster-ops.json] for [portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com]
+created key [43f71971d6afd48f4134f70fdb20cc09e7583556] of type [json] as [./keys/gcp-flashblade-286121-super-admin.json] for [portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com]
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+etag: BwXZcHvETr0=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+etag: BwXZcHvixSg=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHwD_fA=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHwj5vA=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHxBT5A=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHxeCn4=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHx-c1E=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHyef_c=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHy8_Gk=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHzcZvY=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountKeyAdmin
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcHz4O5c=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountKeyAdmin
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcH0Wets=
+version: 1
+Updated IAM policy for project [gcp-flashblade-286121].
+bindings:
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/compute.admin
+- members:
+  - serviceAccount:service-7996432997@compute-system.iam.gserviceaccount.com
+  role: roles/compute.serviceAgent
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/container.admin
+- members:
+  - serviceAccount:service-7996432997@container-engine-robot.iam.gserviceaccount.com
+  role: roles/container.serviceAgent
+- members:
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/containerregistry.ServiceAgent
+- members:
+  - serviceAccount:7996432997-compute@developer.gserviceaccount.com
+  - serviceAccount:7996432997@cloudservices.gserviceaccount.com
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:service-7996432997@containerregistry.iam.gserviceaccount.com
+  role: roles/editor
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-gkehub.iam.gserviceaccount.com
+  role: roles/gkehub.serviceAgent
+- members:
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountAdmin
+- members:
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/iam.serviceAccountKeyAdmin
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountTokenCreator
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/iam.serviceAccountUser
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/logging.logWriter
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.dashboardEditor
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/monitoring.metricWriter
+- members:
+  - serviceAccount:service-7996432997@gcp-sa-mcmetering.iam.gserviceaccount.com
+  role: roles/multiclustermetering.serviceAgent
+- members:
+  - user:broychoudhury@purestorage.com
+  - user:manager-it@purestorage.com
+  role: roles/owner
+- members:
+  - serviceAccount:bikash-service-account@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  - serviceAccount:portworx-gke-super-admin@gcp-flashblade-286121.iam.gserviceaccount.com
+  - user:broychoudhury@purestorage.com
+  role: roles/resourcemanager.projectIamAdmin
+- members:
+  - serviceAccount:portworx-gke-cloud-operations@gcp-flashblade-286121.iam.gserviceaccount.com
+  role: roles/stackdriver.resourceMetadata.writer
+etag: BwXZcH01KOU=
+version: 1
+You do not currently have this command group installed.  Using it 
+requires the installation of components: [beta]
+
+
+Your current Google Cloud CLI version is: 375.0.0
+Installing components from version: 375.0.0
+
+┌─────────────────────────────────────────────┐
+│     These components will be installed.     │
+├──────────────────────┬────────────┬─────────┤
+│         Name         │  Version   │   Size  │
+├──────────────────────┼────────────┼─────────┤
+│ gcloud Beta Commands │ 2022.02.25 │ < 1 MiB │
+└──────────────────────┴────────────┴─────────┘
+
+For the latest full release notes, please visit:
+  https://cloud.google.com/sdk/release_notes
+
+Do you want to continue (Y/n)?  Y
+
+╔════════════════════════════════════════════════════════════╗
+╠═ Creating update staging area                             ═╣
+╠════════════════════════════════════════════════════════════╣
+╠═ Installing: gcloud Beta Commands                         ═╣
+╠════════════════════════════════════════════════════════════╣
+╠═ Creating backup and activating new installation          ═╣
+╚════════════════════════════════════════════════════════════╝
+
+Performing post processing steps...done.                                                                                         
+
+Update done!
+
+Restarting command:
+  $ gcloud beta billing projects link gcp-flashblade-286121 --billing-account 0097E7-D4D264-463333
+
+API [cloudbilling.googleapis.com] not enabled on project [7996432997]. Would you like to enable and retry (this will take a few 
+minutes)? (y/N)?  N
+
+ERROR: (gcloud.beta.billing.projects.link) User [broychoudhury@purestorage.com] does not have permission to access projects instance [gcp-flashblade-286121] (or it may not exist): Cloud Billing API has not been used in project 7996432997 before or it is disabled. Enable it by visiting https://console.developers.google.com/apis/api/cloudbilling.googleapis.com/overview?project=7996432997 then retry. If you enabled this API recently, wait a few minutes for the action to propagate to our systems and retry.
+- '@type': type.googleapis.com/google.rpc.Help
+  links:
+  - description: Google developers console API activation
+    url: https://console.developers.google.com/apis/api/cloudbilling.googleapis.com/overview?project=7996432997
+- '@type': type.googleapis.com/google.rpc.ErrorInfo
+  domain: googleapis.com
+  metadata:
+    consumer: projects/7996432997
+    service: cloudbilling.googleapis.com
+  reason: SERVICE_DISABLED
+Operation "operations/acat.p2-7996432997-d6c059a3-1c71-439a-a6b7-36d1f07274c8" finished successfully.
+bash-3.2$
