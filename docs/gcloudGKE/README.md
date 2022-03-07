@@ -1,5 +1,10 @@
 # Step by Step Guide to install Google Cloud GKE with Portworx
 
+```
+If you have completed the GKE admin setup, please go to step #4
+
+```
+
 ## PreRequisite
 
 1. Install all the required softwares/tools - please see docs/[README.md](../../README.md) for instruction on installing all the required softwares
@@ -34,6 +39,8 @@ If you already have the repo downloaded, git pull command will bring the latest 
 
 ### 3. GKE Cloud Authorization
 
+Note: Manual way of creating service account from console. 
+
 ```
 Create a new Service Account (if you do not have one provisioned) already :
 Navigate to Google cloud console for your org (https://console.cloud.google.com/) - Login with your credentials
@@ -57,6 +64,8 @@ Click on Service Accounts
 ```
 ### 4. Navigate to scripts folder and Run setup_env.sh <param1> <param2> <param3>
 
+Note: Ensure to have the IAM json in scripts/keys folder (Your admin has created the service account and should be sharing details with you)
+	
 ```
 ./setup_env.sh <Provider> <UniqueIdForCluster> <ZoneName>
 
@@ -103,7 +112,7 @@ drwxr-xr-x  8 t_gadar  staff   256 Jan 24 23:01 .
 Use vi or nano to edit terraform.tfvars file. To execute usng nano as a file editor you can use the command: `nano terraform.tfvars`
 
 ```	
-google_cloud_project_id         = "px_project"       
+google_cloud_project_id         = "gcp-flashblade-286121"    // This is a GCP project that your admin has created       
 google_region                   = "us-central1"      // For VPC only
 google_zone                     = "us-central1-a"    // If you provide region here, GKE will try create nodes in each zone - Multiplied by 3
 number_of_nodes                 = "3"                // # of nodes. Minimum of 3 nodes are required
