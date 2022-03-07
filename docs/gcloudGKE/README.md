@@ -124,13 +124,13 @@ google_cloud_project_id         = "gcp-flashblade-286121"    // This is a GCP pr
 google_region                   = "us-central1"      // For VPC only
 google_zone                     = "us-central1-a"    // If you provide region here, GKE will try create nodes in each zone - Multiplied by 3
 number_of_nodes                 = "3"                // # of nodes. Minimum of 3 nodes are required
-gke_machine_type                = "e2-standard-2"
+gke_machine_type                = "e2-highcpu-4"
 compute_engine_service_account  = "portworx-gke-cloud-operations@px-final-test1.iam.gserviceaccount.com"
 gcloud_iam_file_location        = "../../../../scripts/keys/px-final-test1-cluster-ops.json" //Location to your .json credentials file
 
 cluster_name                    = "ps-final-test1"  // Define your own unique cluster name
 gke_machine_image               = "UBUNTU_CONTAINERD"
-k8s_version                     = "1.21.6-gke.1500" // Kubernetes Engine Version
+k8s_version                     = "1.21.6-gke.1503" // Kubernetes Engine Version
 px_operator_version             = "1.6.1"           // Portworx Operator Version
 px_kvdb_device_storage_type     = "pd-ssd"          // Px KVDB Storage Type on Google Cloud
 px_kvdb_device_storage_size     = "30"              // Px KVDB Storage size
