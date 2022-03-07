@@ -23,6 +23,12 @@ Conroller is the machine you will running all the commands from. Here are the st
 
 	Note: The last command `terraform -v` should return the terraform version.  If there is any issue checkout the [terraform installation guide](https://learn.hashicorp.com/tutorials/terraform/install-cli) as per your environment.
 	
+- Install kubectl: (Skip if already installed):
+
+		curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+      		sudo install -o root -g root -m 0755 kubectl ~/bin/kubectl
+
+
 - Set environment variables with ssh user and the IP addresses of all the hosts separated by white space. For example if you have 5 machines configured with these IPs '10.21.152.94, 10.21.152.95, 10.21.152.96, 10.21.152.97 and 10.21.152.98' and you are going to use 'root' user, hare are the commands to setup the variables:
 
 		export vHOSTS="10.21.152.94 10.21.152.95 10.21.152.96 10.21.152.97 10.21.152.98";
