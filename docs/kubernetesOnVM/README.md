@@ -106,7 +106,8 @@ Edit the file `cluster-config-vars` and then set the values for variables as:
 
 **PX_OPERATOR_VERSION** - To specify the portworx operator version.
 
-**PX_STORAGE_CLUSTER_VERSION** - To specify the portworx storage cluster version.
+**PX_STORAGE_CLUSTER_VERSION** - To specify the portworx storage cluster version. 
+> Note: Make sure version is in 3 digits i.e 2.9.0
 
 **PX_KVDB_DEVICE** - Specify the device for KVDB. Leave blank to share the portworx storage with kvdb. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
 
@@ -135,8 +136,8 @@ Once all the variables have been configured, your file will look as the followin
 	# Set portworx operator version
 	PX_OPERATOR_VERSION="1.6.1"
 	
-	# Set portworx storage cluster version
-	PX_STORAGE_CLUSTER_VERSION="2.9.0"
+	# Set portworx storage cluster version. Note: Make sure version number is 3 digits.
+	PX_STORAGE_CLUSTER_VERSION="2.9.0"    
 	
 	# Specify the device for KVDB. Leave blank to share the px storage for kvdb. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
 	PX_KVDB_DEVICE="/dev/sdb";
@@ -166,9 +167,21 @@ To check portworx cluster status:
 	kubectl --kubeconfig=kube-config-file exec -n $PX_NS_AND_POD -c portworx -- /opt/pwx/bin/pxctl status
 
 ## Adding nodes to the cluster:
+
+Make sure the passwordless ssh is setup. If not then run the below commands: 
+
+	export vHOSTS="<AddIPofNode>";
+	export vSSH_USER="root"
+	for i in $vHOSTS ;do ssh-copy-id ${vSSH_USER}@${i}; done
+	
+Test the passwordless ssh.
+	
+	for i in $vHOSTS ;do ssh ${vSSH_USER}@${i} 'sudo hostname' ; done
+	
+
 To add a new node to the cluster you will need to run `add-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster.
 
-    ./add-node.sh 192.168.1.55
+    ./add-node.sh <ipAddress>
     
 This example will add a node with '192.16.1.98' IP to the cluster.
     
