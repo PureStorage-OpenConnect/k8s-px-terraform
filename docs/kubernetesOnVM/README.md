@@ -8,11 +8,11 @@ We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx
 - Additional (unmounted) hard drives attached to the worker nodes for the Portworx storage and kvdb device.
 - Disable the firewall so machines can connect to each other (A script is provided for CentOS to disable the firewall). If you do not want to  disable the firewall then you can allow the TCP ports at 9001-9022 and UDP port at 9002. Read the network section for more information in [portworx documentation](https://docs.portworx.com/start-here-installation/).
 - You will need to use a machine as controller. This conroller must be able to connect to all the machines with password-less ssh (Steps are provided to setup passwordless ssh).
-- The ssh user must be the root user. If you want to use another user with sudo privileges make sure the user is able to run sudo commands without requiring to enter the password.
+- The ssh user must be the root user. If you want to use another user account with sudo privileges make sure the user is able to run sudo commands without requiring to enter the password.
 
 ## Steps
 ### 1. Setup the controller:
-Conroller is the machine you will running the all the commands from. Here are the steps to prepare it:
+Conroller is the machine you will running all the commands from. Here are the steps to prepare it:
 	 
 - Login to your controller machine with ssh.
 - Install Terraform (Versoin: 1.1.4). Skip if already installed.
