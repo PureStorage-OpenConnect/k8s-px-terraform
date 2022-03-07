@@ -1,4 +1,4 @@
-google_cloud_project_id         = "px-project"
+google_cloud_project_id         = "gcp-flashblade-286121"
 google_region                   = "google_region_replaceme"
 google_zone                     = "google_region_replaceme-a"
 number_of_nodes                 = "3"
