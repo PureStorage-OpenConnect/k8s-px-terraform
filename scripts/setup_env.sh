@@ -8,11 +8,12 @@ set -o pipefail
 #########################
 display_help() {
   echo "$(date) --> Usage: $0 [option...] {aws|gcloud|azure|vm|baremetal} {UniqueIdForTheCluster} {RegionOrDataCenter}" >&2
-  echo "$(date) -->  AWS    for example: ./setup_env.sh aws <accout-placeholder> us-west-2"
-  echo "$(date) -->         for example: ./setup_env.sh aws 1234567 global [Note: requires Admin privileges to create Group, policy etc]"
-  echo "$(date) -->  GCloud for example: ./setup_env.sh gcloud dev us-east4"
-  echo "$(date) -->  Azure  for example: ./setup_env.sh azure dev us-east4"
-  echo "$(date) -->  VM     for example: ./setup_env.sh vm cluster01 ps-lab-01"
+  echo "$(date) -->  AWS        for example: ./setup_env.sh aws <accout-placeholder> us-west-2"
+  echo "$(date) -->             for example: ./setup_env.sh aws 1234567 global [Note: requires Admin privileges to create Group, policy etc]"
+  echo "$(date) -->  GCloud     for example: ./setup_env.sh gcloud dev us-east4"
+  echo "$(date) -->  Azure      for example: ./setup_env.sh azure dev us-east4"
+  echo "$(date) -->  VM         for example: ./setup_env.sh vm cluster01 ps-lab-01"
+  echo "$(date) -->  BareMetal  for example: ./setup_env.sh baremetal cluster01 ps-lab-01"
   echo
   exit 1
 }
@@ -127,5 +128,5 @@ cd "${TF_DIR}"
 #export PS1=$(pwd):$PS1
 
 echo "Opening a new shell with the Target directory"
-$SHELL; 
+$SHELL;
 

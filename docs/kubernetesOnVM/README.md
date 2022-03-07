@@ -12,16 +12,18 @@ We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx
 
 ## Steps
 ### 1. Setup the controller:
-Conroller is the machine you will running all the commands from. Here are the steps to prepare it:
+Conroller is the machine where you will be running all the terraform commands. Here are the steps to prepare it:
+
+> Note: It can be one of the machines you are going to use for kubernetes cluster.
 	 
 - Login to your controller machine with ssh.
-- Install Terraform (Versoin: 1.1.4). Skip if already installed.
+- Install Terraform (Versoin: 1.1.4). (Skip if already installed)
 	 
 		wget -q -O/tmp/terraform.zip https://releases.hashicorp.com/terraform/1.1.4/terraform_1.1.4_linux_amd64.zip
 		unzip -q -d ~/bin /tmp/terraform.zip
 		terraform -v
 
-	Note: The last command `terraform -v` should return the terraform version.  If there is any issue checkout the [terraform installation guide](https://learn.hashicorp.com/tutorials/terraform/install-cli) as per your environment.
+	Note: The last command `terraform -v` should return the terraform version.  If there is any issue' checkout the [terraform installation guide](https://learn.hashicorp.com/tutorials/terraform/install-cli) as per your environment.
 	
 - Install kubectl: (Skip if already installed):
 
@@ -50,7 +52,7 @@ Download the latest source from [git](https://github.com/PureStorage-OpenConnect
 
 	git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git
 
-### 3. Prepare cluster host machines and setup the environment.
+### 3. Setup the environment
 
 Navigate to the 'scripts' folder where all the scripts are saved:
 
@@ -85,7 +87,7 @@ Example:
 ### 4. Change the required variables as per the requirement.
 Edit the file `cluster-config-vars` and then set the values for variables as:
 
-**PX_HOST_IPS** - Hostname and IP of the nodes. This will be already set by the setup-evn.sh script.
+**PX_HOST_IPS** - Hostname and IP of the nodes. This will be pre-configured by the setup-evn.sh script and you can modify if you want.
 
 **PX_ANSIBLE_USER** - This is for the ssh user Kubespray will use. It must be root or a user with sudo privileges who is able run run sudo command without requiring to enter the password. This also will be pre-configured by the setup-env.sh script.
 
@@ -100,7 +102,7 @@ Edit the file `cluster-config-vars` and then set the values for variables as:
 >1. Portworx will not use these nodes as storage nodes, so these nodes will be cordoned.
 >2. Portworx needs minimum 3 worker nodes, so `TotalNodes - ControlPlaneNodes` must be equal to or greater than 3.
 
-**PX_CLUSTER_NAME** - This variable is to specify the cluster name. This also will be pre-configured by the setup-env.sh script.
+**PX_CLUSTER_NAME** - This variable is to specify the cluster name. This also will be pre-configured by the setup-env.sh script, you can modify if you want.
 
 **PX_OPERATOR_VERSION** - To specify the portworx operator version.
 
@@ -109,7 +111,7 @@ Edit the file `cluster-config-vars` and then set the values for variables as:
 **PX_KVDB_DEVICE** - Specify the device for KVDB. Leave blank to share the portworx storage with kvdb. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
 
 
-Once all the variables have been configured, here is an example your file will look alike:
+Once all the variables have been configured, your file will look as the following example:
 
 	# Specify the hostnames and IP of the nodes.
 	PX_HOST_IPS="linux-host01.puretec.purestorage.com,10.21.152.93 linux-host02.puretec.purestorage.com,10.21.152.94 linux-host03.puretec.purestorage.com,10.21.152.95 linux-host04.puretec.purestorage.com,10.21.152.96 linux-host05.puretec.purestorage.com,10.21.152.97 linux-host06.puretec.purestorage.com,10.21.152.98";
@@ -147,7 +149,7 @@ Once all the variables have been configured, here is an example your file will l
 	terraform apply "plan.out";
 
 This will take 10-20 minutes to finish. This completes the creation of kubernetes cluster with Portworx.
-> Note: A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
+> Note: A new kube config file named 'kube-config-file' will be created in your current directory.
 
 ### 6. Check if everything is up and ready:
 To check nodes:

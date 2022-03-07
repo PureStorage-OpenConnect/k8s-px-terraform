@@ -1,374 +1,199 @@
-# Terraform-iac
+# Set up Kubernetes cluster on Bare-Metal Machines using Tarraform+Kubespray
 
-Terraform-iac is a terraform library that manages the lifecycle of EKS/AKS/GKE clusters for Purestorage Portworx capability demo environments
+We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx on these machines.
 
-PreRequisites:
-1. AWSCLI/GCloud/Azure CLI installed and Keys are created with "Admin" Role (Please review [References](#references) section if you need to install)
-2. GIT (to download the GIT repository that contains terraform code)
-3. Terraform (basic troubleshooting knowledge)
-4. Portworx is setup and has a valid license
-5. KubeCtl package needs to be installed
-6. Access to terraform-iac repository. Reach out PureStorage team for the same,
-7. These steps will work with Linux or MAC OS. For Windows please use Docker image.
+### Pre-requisites:
 
-## Setup Terraform
+- Machines running with CentOS or Ubuntu and the configuration must meet the minimum [requirements for Portworx](https://docs.portworx.com/start-here-installation/). Portworx requires minimum 3 worker nodes to run. All machines must have 4CPUs and 4GB of RAM.
+- Additional (unmounted) hard drives attached to the worker nodes for the Portworx storage and kvdb device.
+- Disable the firewall so machines can connect to each other (A script is provided for CentOS to disable the firewall). If you do not want to  disable the firewall then you can allow the TCP ports at 9001-9022 and UDP port at 9002. Read the network section for more information in [portworx documentation](https://docs.portworx.com/start-here-installation/).
+- You will need to use a machine as controller. This conroller must be able to connect to all the machines with password-less ssh (Steps are provided to setup passwordless ssh).
+- The ssh user must be the root user. If you want to use another user account with sudo privileges make sure the user is able to run sudo commands without requiring to enter the password.
 
-You can use terraform in two ways:
+## Steps
+### 1. Setup the controller:
+Conroller is the machine where you will be running all the terraform commands. Here are the steps to prepare it:
 
-#### A. Local Terraform
+> Note: It can be one of the machines you are going to use for kubernetes cluster.
+	 
+- Login to your controller machine with ssh.
+- Install Terraform (Versoin: 1.1.4). (Skip if already installed)
+	 
+		wget -q -O/tmp/terraform.zip https://releases.hashicorp.com/terraform/1.1.4/terraform_1.1.4_linux_amd64.zip
+		unzip -q -d ~/bin /tmp/terraform.zip
+		terraform -v
 
-#### B. Using Docker image  (Optional)
---------------------------------------------------------------------------------------------------------------
-## A. Local Terraform
-### 1. Install Terraform:
-Install Terraform if its already not installed:
-Note: the Terraform version should be (version 1.0.11)
+	Note: The last command `terraform -v` should return the terraform version.  If there is any issue' checkout the [terraform installation guide](https://learn.hashicorp.com/tutorials/terraform/install-cli) as per your environment.
+	
+- Install kubectl: (Skip if already installed):
 
-```
-wget -q -O/tmp/terraform.zip https://releases.hashicorp.com/terraform/1.0.11/terraform_1.0.11_linux_amd64.zip 
-unzip -q -d /usr/bin /tmp/terraform.zip 
-rm /tmp/terraform.zip
+		curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
+		sudo install -o root -g root -m 0755 kubectl ~/bin/kubectl
 
-```
+
+- Set environment variables with ssh user and the IP addresses of all the hosts separated by white space. For example if you have 5 machines configured with these IPs '10.21.152.94, 10.21.152.95, 10.21.152.96, 10.21.152.97 and 10.21.152.98' and you are going to use 'root' user, hare are the commands to setup the variables:
+
+		export vHOSTS="10.21.152.94 10.21.152.95 10.21.152.96 10.21.152.97 10.21.152.98";
+		export vSSH_USER="root"
+
+- Setup and test password-less ssh:
+	Following command will attempt to add your ssh key to the **authorized_keys** file of all your hosts provided in vHOSTS variable. It will ask for the password for each host (once for each host).
+	
+		for i in $vHOSTS ;do ssh-copy-id ${vSSH_USER}@${i}; done
+	
+    Test the passwordless ssh.
+	
+		for i in $vHOSTS ;do ssh ${vSSH_USER}@${i} 'sudo hostname' ; done
+	
+    This command will print the hostname of each host without asking for the password, wich indicates passwordless ssh is working fine and you have sudo (root) permissions as well.
 
 ### 2. Get the Terraform code from the repository
+Download the latest source from [git](https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git/) to have latest k8s-px-terraform library. Alternatively, git pull command will bring the latest code if you already have the source code pulled
 
-Download the latest source from [git](https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git/) to have latest terraform-iac library. Alternatively, git pull command will bring the latest code if you already have the source code pulled
+	git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git
 
-```
-git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git.git
-```
+### 3. Setup the environment
 
-### 3. Setup Cloud Env Profile
+Navigate to the 'scripts' folder where all the scripts are saved:
 
-#### AWS 
+	cd k8s-px-terraform/scripts
 
-The AWS CLI stores sensitive credential information that you specify with `aws configure` in a local file named credentials, in a folder named .aws in your home directory.
+**Disable firewall:** If you want to disable the firewall you can use the following script (CentOS machies):
+> If you want to check the current status just run without the `--disable` parameter.
+
+	./disable-firewall_CentOS.sh --disable
+
+Execute the script to setup environment by replacing values accordingly:
+
+`./setup_env.sh <EnvironmentName> <UniqueIdForTheCluster> <ZoneName>`
+
+Example:
+
+    ./setup_env.sh baremetal px-cluster01 ps-lab-01
+
+   The script will create directory structure for the project. Once completed you will be in a new shell where you will see files like:
+
+	[user@linux-host02 ps-lab-01]$ ls -la
+
+    total 20
+    drwxrwxr-x 2 rbadmin rbadmin  101 Feb 15 03:52 .
+    drwxrwxr-x 3 rbadmin rbadmin   23 Feb 15 03:51 ..
+    -rwxrwxr-x 1 rbadmin rbadmin 2047 Feb 15 03:51 add-node.sh
+    -rwxrwxr-- 1 rbadmin rbadmin 1216 Feb 15 03:51 cluster-config-vars
+    -rwxrwxr-x 1 rbadmin rbadmin  658 Feb 15 03:51 main.tf
+    -rwxr-xr-x 1 rbadmin rbadmin 2183 Feb 15 03:51 remove-node.sh
+    -rwxrwxr-x 1 rbadmin rbadmin  411 Feb 15 03:51 vars
+
+### 4. Change the required variables as per the requirement.
+Edit the file `cluster-config-vars` and then set the values for variables as:
+
+**PX_HOST_IPS** - Hostname and IP of the nodes. This will be pre-configured by the setup-evn.sh script and you can modify if you want.
+
+**PX_ANSIBLE_USER** - This is for the ssh user Kubespray will use. It must be root or a user with sudo privileges who is able run run sudo command without requiring to enter the password. This also will be pre-configured by the setup-env.sh script.
+
+**PX_METALLB_ENABLED** - Set this to true if you want to install the MetalLB as well.
+
+**PX_METALLB_IP_RANGE** - If 'PX_METALLB_ENABLED' is set to true, provide an IP Range for MetalLB from the current network subnet. MetalLB will assign IPs from this range. It will be ignored if  'PX_METALLB_ENABLED' is set to false.
+
+**PX_KUBESPRAY_VERSION** - Set the Kubespray version.
+
+**PX_KUBE_CONTROL_HOSTS** - Specify the number of hosts to be used as Kubernetes control plane nodes.
+>NOTE:
+>1. Portworx will not use these nodes as storage nodes, so these nodes will be cordoned.
+>2. Portworx needs minimum 3 worker nodes, so `TotalNodes - ControlPlaneNodes` must be equal to or greater than 3.
+
+**PX_CLUSTER_NAME** - This variable is to specify the cluster name. This also will be pre-configured by the setup-env.sh script, you can modify if you want.
+
+**PX_OPERATOR_VERSION** - To specify the portworx operator version.
+
+**PX_STORAGE_CLUSTER_VERSION** - To specify the portworx storage cluster version.
+
+**PX_KVDB_DEVICE** - Specify the device for KVDB. Leave blank to share the portworx storage with kvdb. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
 
 
-For example, the files generated by the AWS CLI for a default profile configured with aws configure looks similar to the following.
+Once all the variables have been configured, your file will look as the following example:
 
-~/.aws/credentials
+	# Specify the hostnames and IP of the nodes.
+	PX_HOST_IPS="linux-host01.puretec.purestorage.com,10.21.152.93 linux-host02.puretec.purestorage.com,10.21.152.94 linux-host03.puretec.purestorage.com,10.21.152.95 linux-host04.puretec.purestorage.com,10.21.152.96 linux-host05.puretec.purestorage.com,10.21.152.97 linux-host06.puretec.purestorage.com,10.21.152.98";
+	
+	# Specify the ssh user Ansible will use. It must be root or a sudo user who is able run run sudo command without requiring to the password.
+	PX_ANSIBLE_USER="root";
+	
+	# Enabled MetalLB load-balancer.
+	PX_METALLB_ENABLED="true"
+	PX_METALLB_IP_RANGE="10.21.236.61-10.21.236.70"
+	
+	# Set Kubespray Version
+	PX_KUBESPRAY_VERSION=2.17
+	
+	# Specify the number of hosts to be used as Kubernetes control plane nodes.
+	PX_KUBE_CONTROL_HOSTS=1
+	
+	# ClusterName
+	PX_CLUSTER_NAME="px-cluster01"
+	
+	# Set portworx operator version
+	PX_OPERATOR_VERSION="1.6.1"
+	
+	# Set portworx storage cluster version
+	PX_STORAGE_CLUSTER_VERSION="2.9.0"
+	
+	# Specify the device for KVDB. Leave blank to share the px storage for kvdb. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
+	PX_KVDB_DEVICE="/dev/sdb";
 
-```
-[default]
-aws_access_key_id=AKIAIOSFODNN7EXAMPLE
-aws_secret_access_key=wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY
+### 5. Run the following terraform commands to begin the cluster setup.
 
-[purestorage-dev]
-aws_access_key_id=ALIATHISODNN7EXAMPLE
-aws_secret_access_key=wJalrXUtnFEMI/K7EXXY/bPxRfiCYEXAMPLEKEY
+	terraform init;
+	terraform validate;
+	terraform plan -out plan.out;
+	terraform apply "plan.out";
 
-```
+This will take 10-20 minutes to finish. This completes the creation of kubernetes cluster with Portworx.
+> Note: A new kube config file named 'kube-config-file' will be created in your current directory.
 
-Export AWS profile by pointing to the desired account.
+### 6. Check if everything is up and ready:
+To check nodes:
 
-```
-export AWS_PROFILE=<purestorage_dev> -- Please ensure that this entry exists in the ~/.aws/credentials file
+	kubectl --kubeconfig=kube-config-file get nodes                          
 
-Test connectivity: 
-aws s3 ls
+To check portworx pods:
 
-```
+	kubectl --kubeconfig=kube-config-file get pods -n portworx 
 
-In case you want setup new AWS profile, more information can be found [here.](https://docs.aws.amazon.com/cli/latest/userguide/cli-configure-profiles.html)
+To check portworx cluster status:
 
-You will need access_key and secret_key of your AWS account
+	PX_NS_AND_POD=$(kubectl --kubeconfig=kube-config-file get pods --no-headers -l name=portworx --all-namespaces -o jsonpath='{.items[*].metadata.ownerReferences[?(@.kind=="StorageCluster")]..name}' -o custom-columns="Col-1:metadata.namespace,Col-2:metadata.name" | head -1)
+	kubectl --kubeconfig=kube-config-file exec -n $PX_NS_AND_POD -c portworx -- /opt/pwx/bin/pxctl status
 
-This profile is going to be used for creating the EKS Cluster
+## Adding nodes to the cluster:
+To add a new node to the cluster you will need to run `add-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster.
 
-NOTE: This same keys are also used to provision portworx storage as well
-
-
-#### Google Cloud:
-
-```
-Create a new Service Account if you do not have one provided (and export JSON steps) :
-Navigate to Google cloud console for your org (https://console.cloud.google.com/) - Login with your credentials
-Navigate to IAM & Admin 
-Click on Service Accounts
-    Create new Service Account if you dont have one
-    Choose Name (for ex: svcPortworxDemo )
-        Permissions: 
-          1. Compute Admin
-          2. Service Account User
-          3. Kubernetes Engine Admin
-          4. Project IAM Admin
-          5. Service Account Token Creator
-        Keys:
-            Generate a new Key and export the JSON file (this will be used in terraform.tfvars)
-    Ensure you are connecting to the service account
-        1. gcloud auth revoke <Revoke all active authentications>
-        2. gcloud init (choose your servive-account, project-id, region, zone etc)
-        2. gcloud auth activate-service-account --key-file=/Users/t_gadar/Downloads/svcPortworxDemo-credentials-52bc683c4a93.json
+    ./add-node.sh 192.168.1.55
     
-```
+This example will add a node with '192.16.1.98' IP to the cluster.
+    
+## Removing nodes from the cluster:
+To remove a node from the cluster you will need to run `remove-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster.
 
-#### Azure Cloud:
-```
-Follow the document created at ./docs/AzureSteps.md file for setting up a new AZ account with "Service Principle"
+    ./remove-node.sh <node-name-to-remove>
+    
+This example will remove the specified node from the cluster. Once above script finishes, check the nodes:
 
-```
+    kubectl get nodes --kubeconfig=./kube-config-file
 
-### 4. Navigate to scripts folder and Run setup_env.sh <param1> <param2> <param3>
+You will see the node has been removed from the cluster, finally remove the node from the node-groups in the inventory file:
 
-```
-./setup_env.sh <Provider> <UniqueIdForCluster> <ZoneName>
-
-./setup_env.sh help
-
-~/PureStorage-OpenConnect/k8s-px-terraform/scripts [master*] :./setup_env.sh help                                                           *[master][ruby-2.4.0]
-
-Wed Feb  9 17:03:21 PST 2022 --> Usage: ./setup_env.sh [option...] {aws|gcloud|azure|vm|baremetal} {UniqueIdForTheCluster} {RegionOrDataCenter}
-Wed Feb  9 17:03:21 PST 2022 -->  AWS    for example: ./setup_env.sh aws 1234567 us-west-2
-Wed Feb  9 17:03:21 PST 2022 -->         for example: ./setup_env.sh aws 1234567 global [Note: requires Admin privileges to create Group, policy etc]
-Wed Feb  9 17:03:21 PST 2022 -->  GCloud for example: ./setup_env.sh gcloud dev us-east4
-Wed Feb  9 17:03:21 PST 2022 -->  Azure  for example: ./setup_env.sh azure dev us-east4
-Wed Feb  9 17:03:21 PST 2022 -->  VM     for example: ./setup_env.sh vm cluster01 ps-lab-01
-
-
->Provider : aws, gcloud or zure.
->UniqueIdForCluster : It can be account number or project name.
->Zone : Zone in which cluster will be deployed.
-
-
- ~/PureStorage-OpenConnect/k8s-px-terraform/scripts (master) ⚡ :pwd
-/Users/t_gadar/PureStorage-OpenConnect/k8s-px-terraform/scripts
- 
- aws example:
- ~/PureStorage-OpenConnect/k8s-px-terraform/scripts (master) ⚡ :./setup_env.sh aws 896853494200 us-west-2
- 
- gcloud example:
- ~/PureStorage-OpenConnect/k8s-px-terraform/scripts (master) ⚡ :./setup_env.sh gcloud PSGcloudDev us-central1
- 
- azure aks example:
- ~/PureStorage-OpenConnect/k8s-px-terraform/scripts (master) ⚡ :./setup_env.sh azure PSAzureDev us-west3
- 
- VM example:
- ~/PureStorage-OpenConnect/k8s-px-terraform/scripts (master) ⚡ :./setup_env.sh vm Dev PaloAltoDC
-
-For VM and BareMetal, please follow the link for next Steps.. 
-<LINK Here>
- 
- 
-```
-
-You will be be navigated to a new bash shell at the targeted location with the following files
-
-The following entries are example, you should be seeing similar files and folder structure relative to where you have installed the terraform-iac git repo
-
-#### AWS with "REGION" Example:
-```
-bash-3.2$ pwd
-/Users/t_gadar/PureStorage-OpenConnect/k8s-px-terraform/terraform-live/aws/896853494200/us-west-2
-bash-3.2$
-
-
-/Users/t_gadar/PureStorage-OpenConnect/k8s-px-terraform/terraform-live/aws/896853494200/us-west-2
-bash-3.2$ ls -alrt
-total 64
-drwxr-xr-x   3 t_gadar  staff    96 Jan  3 19:48 ..
-drwxr-xr-x   4 t_gadar  staff   128 Jan  3 19:48 .terraform
--rw-r--r--   1 t_gadar  staff  3528 Jan  3 19:54 eks.tf
--rw-r--r--   1 t_gadar  staff  1123 Jan  3 19:54 network.tf
--rw-r--r--   1 t_gadar  staff    44 Jan  3 19:54 output.tf
--rw-r--r--   1 t_gadar  staff   512 Jan  3 19:54 portworx.tf
--rw-r--r--   1 t_gadar  staff  1237 Jan  3 19:54 provider.tf
--rw-r--r--   1 t_gadar  staff  1226 Jan  3 19:54 sg.tf
--rw-r--r--   1 t_gadar  staff   846 Jan  3 19:54 variable.tf
--rw-r--r--   1 t_gadar  staff   142 Jan  3 19:54 terraform.tfvars
-drwxr-xr-x  11 t_gadar  staff   352 Jan  3 19:54 .
-```
-
-#### AWS with "global" Example:
-```
- ~/PureStorage-OpenConnect/k8s-px-terraform/scripts [master*] :./setup_env.sh aws 12345 global                                               *[master][ruby-2.4.0]
-
-Wed Feb  9 17:05:47 PST 2022 - Environment chosen is:    aws
-Wed Feb  9 17:05:47 PST 2022 - Cluster Identifier:       12345
-Wed Feb  9 17:05:47 PST 2022 - Region/Data Center:       global
-
-Wed Feb  9 17:05:47 PST 2022 - Copied Files from the template folder to target location ../terraform-live/aws/12345/global -- completed
-Changing directory to target directory - ../terraform-live/aws/12345/global
-Opening a new shell with the Target directory
-
- ~/PureStorage-OpenConnect/k8s-px-terraform/terraform-live/aws/12345/global git:(master*) :ls -alrt *.tf
--rw-r--r--  1 t_gadar  staff  5206 Feb  9 17:05 policy.tf
--rw-r--r--  1 t_gadar  staff    45 Feb  9 17:05 provider.tf
- ~/PureStorage-OpenConnect/k8s-px-terraform/terraform-live/aws/12345/global git:(master*) :
-```
-
-
-#### Azure Example:
-```
- ~/PureStorage-OpenConnect/k8s-px-terraform/terraform-live/azure/rgdev/us-west3 git:(master*) :ll
--rw-r--r--  1 t_gadar  staff    447 Jan 24 13:58 main.tf
--rw-r--r--  1 t_gadar  staff   1201 Jan 24 13:58 variable.tf
--rw-r--r--  1 t_gadar  staff   1229 Jan 24 13:58 terraform.tfvars
--rw-r--r--  1 t_gadar  staff    398 Jan 24 22:11 provider.tf
-```
-
-#### GCloud Example:
-```
-~/terraform-iac/terraform-live/gcloud/PSGcloudDev/us-central1 git/master*
- ~/PureStorage-OpenConnect/k8s-px-terraform/terraform-live/gcloud/PSGcloudDev/us-central1 git:(master*) :ls -alrt
-drwxr-xr-x  3 t_gadar  staff    96 Jan 12 23:18 ..
--rw-r--r--  1 t_gadar  staff   571 Jan 12 23:21 terraform.tfvars
--rw-r--r--  1 t_gadar  staff  2244 Jan 24 23:01 gke.tf
--rw-r--r--  1 t_gadar  staff   153 Jan 24 23:01 provider.tf
--rw-r--r--  1 t_gadar  staff  1244 Jan 24 23:01 variable.tf
--rw-r--r--  1 t_gadar  staff   158 Jan 24 23:01 versions.tf
--rw-r--r--  1 t_gadar  staff   444 Jan 24 23:01 vpc.tf
-drwxr-xr-x  8 t_gadar  staff   256 Jan 24 23:01 .
-
-```
-
-
-### 5. Configure terraform.tfvars [parameters]
-
-Edit the file - nano terraform.tfvars and replace the following content and correct the values per the account
-
-Ensure the key-pair has been created in the region prior to updating the terraform.tfvars file below:
-
-In case you need to create the key pair, follow the steps:
-- Login to AWS Console
-- Navigate to EC2 Service
-- Select/Click on "Key Pairs" on the left panel in Network & Security Section
-- Click on "Create Key Pair" button and follow the steps
-- Save the PEM key file that is downloaded automatically for future use to login to the nodes
-
-For additional information, you can check the following link here https://docs.aws.amazon.com/cli/latest/userguide/cli-services-ec2-keypairs.html
-
-
-### 6. Execute
-
-```
-terraform init
-terraform validate
-terraform plan -var-file="terraform.tfvars" -out plan.out
-terraform apply "plan.out"
-```
-
-This completes the creation of EKS cluster with Portworx, and the output of cluster name is generated.
-Note: A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
+    vim "kubespray/inventory/<your cluster name>/hosts.yaml"
+    
+> Make sure to remove the node from all groups.
 
 
 ## Cleanup steps:
 
-Step 1: Delete all namespaces that are created on the cluster using a script.
 
-Step 2: Export desired AWS account profile (Skip if already exported) and then run the terraform destroy command:
+> Warning: This process will remove the Kubernetes cluster and wipe the portworx data.
 
-```
-export AWS_PROFILE=purestorage_aws_dev
-terraform destroy -auto-approve
-```
+Navigate to the folder where you ran the terraform commands to create the cluster and run following command to destroy the Kubernetes/Portworx cluster:
 
-Note: the terraform destroy command needs to be executed from the same location as terraform apply command. 
-
-## B. Using Docker image (Optional)
-
-
-Build Docker Image using the below shell script;
-
-```
-./buildDockerImage.sh
-```
-
-
-Setup AWS credentials using the following environment variables:
-```
-export AWS_ACCESS_KEY_ID=$(aws --profile <aws_profile> configure get aws_access_key_id)
-export AWS_SECRET_ACCESS_KEY=$(aws --profile <aws_profile> configure get aws_secret_access_key)
-```
-
-Execute the docker image using the below shell script:
-
-``` 
-./runDockerImage.sh
-```
-
-### Terraform Plan and Apply
-
-Navigate to the folder that contains terraform files:
-
-```
-cd aws-<accountnumber>/<region>
-
-The folder should have the following files:
-
-~/PureStorage-OpenConnect/k8s-px-terraform/terraform-live/aws-077119361744/us-west-1 master  :ll
-total 80
--rw-r--r--  1 t_gadar  staff   235 Dec 15 11:57 main.tf
--rw-r--r--  1 t_gadar  staff  1123 Dec 15 11:57 network.tf
--rw-r--r--  1 t_gadar  staff    44 Dec 15 11:57 output.tf
--rw-r--r--  1 t_gadar  staff   359 Dec 15 11:57 portworx.tf
--rw-r--r--  1 t_gadar  staff  1237 Dec 15 11:57 provider.tf
--rw-r--r--  1 t_gadar  staff  1226 Dec 15 11:57 sg.tf
--rw-r--r--  1 t_gadar  staff   509 Dec 15 12:00 variable.tf
--rw-r--r--  1 t_gadar  staff  3467 Dec 15 12:03 eks.tf
-
-```
-
-Follow the Step 3 - 6 from non-docker steps
-
-
-## AWS IAM Permissions
-
-Users who want to create EKS cluster with portworx would require permissions that are defined in the ./templates/aws/global
-
-The group, policies can be created by running the following commands by an Admin
-
-***** NOTE: Upon creating the group, users needs to be assigned to this newly created group *****
-
-```
-
-
-./setup_env.sh aws 1234567 global
-
-terraform init
-terraform validate
-terraform plan -out "plan.out"
-terraform apply "plan.out"
-
-```
-
-If you want to create manually:
-
-Login to AWS console, Navigate to IAM 
-
-Step 1: Create a custom policy that has limited IAM access and additional EKS custom permissions, the policy json is located in terraform-iac/scripts/eks-custom-iam.json
-
-Step 2: Add the following AWS managed Policies to the user/group
-```
-AmazonEC2FullAccess
-AmazonEKSClusterPolicy
-AmazonEKSWorkerNodePolicy
-AmazonS3ReadOnlyAccess
-AmazonEKSServicePolicy
-AmazonEKS_CNI_Policy
-AmazonEKSFargatePodExecutionRolePolicy
-AmazonEKSVPCResourceController
-```
-
-## References:
-
-Install AWSCLI Guide - https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html
-
-Setup AWS Keypair - https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/ec2-key-pairs.html#having-ec2-create-your-key-pair
-
-Install GCloud SDK Guide - https://cloud.google.com/sdk/docs/quickstart
-
-Install Azure Cli Guide - https://docs.microsoft.com/en-us/cli/azure/install-azure-cli-macos
-
-Install and Configure GIT - https://git-scm.com/book/en/v2/Getting-Started-Installing-Git
-
-
-
-## Contributing
-Pull requests are welcome. For major changes, please open an issue first to discuss what you would like to change.
-
-Please make sure to update tests as appropriate.
-
-
+	terraform destroy -auto-approve;
 
