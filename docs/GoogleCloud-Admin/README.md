@@ -35,8 +35,21 @@ Execute the script "setup_gcp_project.sh" located in the scripts folder
 
 The script will ask to provide "Billing Account Number" that needs to be associated with the project if you were to choose to select the new project
 
+Reference to the log file during one of the setup run: https://raw.githubusercontent.com/PureStorage-OpenConnect/k8s-px-terraform/main/docs/GoogleCloud-Admin/Setup.log?token=GHSAT0AAAAAABRTTPWKJWYGRN2FI3WAYHVSYROVFRQ
+
+The below script will ask for billing id and project id. Both of these can be found from the Google console. See image 1 and image 2.
+
 ```
 ./setup_gcp_project.sh
 ```
 
-Upon completion of execution, the new keys will be generated in the keys folder, that can be utilized to create the cluster
+Upon completion of execution, the new key will be generated in the scripts/keys folder, that should be utilized to create the cluster
+
+```
+~/purestorage/terraform-iac/scripts/keys  on master ! :ls -alrt                                      
+total 8
+-rw-------   1 t_gadar  staff  2355 Feb 23 15:13 px-final-test1-cluster-ops.json
+drwxr-xr-x  22 t_gadar  staff   704 Mar  4 09:22 ..
+drwx------   3 t_gadar  staff    96 Mar  6 18:39 .
+ ~/purestorage/terraform-iac/scripts/keys  on master ! :                                               
+ ```
