@@ -44,22 +44,23 @@ Conroller is the machine you will running all the commands from. Here are the st
 		for i in $vHOSTS ;do ssh ${vSSH_USER}@${i} 'sudo hostname' ; done
 	
     This command will print the hostname of each host without asking for the password, wich indicates passwordless ssh is working fine and you have sudo (root) permissions as well.
-- Disable firewall:
-    If you want to disable the firewall here is a script you can use for the same (Currently CentOS is supported). To access the script you will need to clone this repo as described in the next section:
-    Once you cloned the repo you will need to run script as:
-
-        k8s-px-terraform/scripts/vm/disable-firewall_CentOS.sh --disable
-
-> If you want to check the current status just run without the `--disable` parameter.
 
 ### 2. Get the Terraform code from the repository
 Download the latest source from [git](https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git/) to have latest k8s-px-terraform library. Alternatively, git pull command will bring the latest code if you already have the source code pulled
 
-	git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git.git
+	git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git
 
-### 3. Navigate to the 'scripts' folder and run script to setup the environment.
+### 3. Prepare cluster host machines and setup the environment.
+
+Navigate to the 'scripts' folder where all the scripts are saved:
 
 	cd k8s-px-terraform/scripts
+
+**Disable firewall:** If you want to disable the firewall you can use the following script (CentOS machies):
+> If you want to check the current status just run without the `--disable` parameter.
+
+	./disable-firewall_CentOS.sh --disable
+
 Execute the script to setup environment by replacing values accordingly:
 
 `./setup_env.sh <EnvironmentName> <UniqueIdForTheCluster> <ZoneName>`
@@ -94,10 +95,10 @@ Edit the file `cluster-config-vars` and then set the values for variables as:
 
 **PX_KUBESPRAY_VERSION** - Set the Kubespray version.
 
-**PX_KUBE_CONTROL_HOSTS** - Specify the number of hosts to be used as Kubernetes control plane nodes. Default is 1, but you can use more than 1 for high availability.
+**PX_KUBE_CONTROL_HOSTS** - Specify the number of hosts to be used as Kubernetes control plane nodes.
 >NOTE:
 >1. Portworx will not use these nodes as storage nodes, so these nodes will be cordoned.
->2. Portworx needs minimum 3 worker nodes, so `TotalNodes-ControlPlaneNodes` must be equal to or greater than 3.
+>2. Portworx needs minimum 3 worker nodes, so `TotalNodes - ControlPlaneNodes` must be equal to or greater than 3.
 
 **PX_CLUSTER_NAME** - This variable is to specify the cluster name. This also will be pre-configured by the setup-env.sh script.
 
