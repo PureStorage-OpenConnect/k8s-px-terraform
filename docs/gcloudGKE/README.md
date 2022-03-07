@@ -185,7 +185,29 @@ terraform destroy target null_resource.install_portworx -auto-approve
 terraform plan -out "plan.out"
 terraform apply "plan.out"
 ```
-    
+	
+### How to SSH into GKE Node
+1.) In your GCP (Google Cloud) Console go to compute engine -> VM Instances
+	
+2.) Select the instance you want to SSH into
+	
+3.) Click on SSH button to log in to the instance via SSH. Please refer to screenshot below:
+![SSH into Instance](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/main/docs/gcloudGKE/gcp5.JPG)
+	
+### Terraform Helpful Command
+	
+To list all the resources in the terraform state:
+```
+	terraform state list
+```	
+To destroy one specific resource from state:
+```
+	terraform destroy -target <ResourceNameFromState> -auto-approve
+```	
+To remove one resource from state:
+```
+	terraform state rm <ResourceNameFromState>
+``` 
 ## Cleanup steps:
 Step 1: 
 Configure Kubeconfig to the GKE cluster that you would like to clean up
