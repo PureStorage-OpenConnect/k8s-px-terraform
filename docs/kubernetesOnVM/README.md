@@ -7,12 +7,12 @@ We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx
 - Virtual Machines running with CentOS or Ubuntu and the configuration must meet the minimum [requirements for Portworx](https://docs.portworx.com/start-here-installation/). Portworx requires minimum 3 worker nodes to run. All machines must have 4CPUs and 4GB of RAM.
 - Additional (unmounted) hard drives attached to the worker nodes for the Portworx storage and kvdb device.
 - Disable the firewall so machines can connect to each other (A script is provided for CentOS to disable the firewall). If you do not want to  disable the firewall then you can allow the TCP ports at 9001-9022 and UDP port at 9002. Read the network section for more information in [portworx documentation](https://docs.portworx.com/start-here-installation/).
-- You will need to use a machine as controller. This conroller must be able to connect to the all machines with password-less ssh (Steps are provided to setup passwordless ssh).
+- You will need to use a machine as controller. This conroller must be able to connect to all the machines with password-less ssh (Steps are provided to setup passwordless ssh).
 - The ssh user must be the root user. If you want to use another user with sudo privileges make sure the user is able to run sudo commands without requiring to enter the password.
 
 ## Steps
 ### 1. Setup the controller:
-Conroller is the machine you will running the all the commands from. Here are the steps to prepare the it:
+Conroller is the machine you will running the all the commands from. Here are the steps to prepare it:
 	 
 - Login to your controller machine with ssh.
 - Install Terraform (Versoin: 1.1.4). Skip if already installed.
@@ -62,7 +62,7 @@ Example:
 
     ./setup_env.sh vm px-cluster01 ps-lab-01
 
-   The script with create directory structure for the project. Once completed you will be in a new shell where you will see files like:
+   The script will create directory structure for the project. Once completed you will be in a new shell where you will see files like:
 
 	[user@linux-host02 ps-lab-01]$ ls -la
 
@@ -157,7 +157,7 @@ This example will add a node with '192.16.1.98' IP to the cluster.
 ## Removing nodes from the cluster:
 To remove a node from the cluster you will need to run `remove-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster.
 
-    ./remove-node.sh node-name-to-remove
+    ./remove-node.sh <node-name-to-remove>
     
 This example will remove the specified node from the cluster. Once above script finishes, check the nodes:
 
