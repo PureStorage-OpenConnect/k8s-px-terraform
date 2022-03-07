@@ -108,6 +108,14 @@ drwxr-xr-x  8 t_gadar  staff   256 Jan 24 23:01 .
 
 
 ### 5. Configure terraform.tfvars [parameters]
+	
+Google Cloud Project ID can be found from your Google console by navigating to the project where you are interested to creating the GKE cluster. See image below for example:
+	
+![Project ID from Console Example](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/main/docs/gcloudGKE/gcp2.JPG)
+	
+The json IAM files contains the service account that needs to be placed in terraform.tfvars. See below image for example:
+	
+![compute_engine_service_account](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/main/docs/gcloudGKE/gcp4.JPG)
 
 Use vi or nano to edit terraform.tfvars file. To execute usng nano as a file editor you can use the command: `nano terraform.tfvars`
 
