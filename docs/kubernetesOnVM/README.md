@@ -23,7 +23,7 @@ Conroller is the machine you will running all the commands from. Here are the st
 
 	Note: The last command `terraform -v` should return the terraform version.  If there is any issue checkout the [terraform installation guide](https://learn.hashicorp.com/tutorials/terraform/install-cli) as per your environment.
 	
-- Set an environment variable with ssh user and the IP addresses of all the hosts separated by white space:
+- Set environment variables with ssh user and the IP addresses of all the hosts separated by white space. For example if you have 5 machines configured with these IPs '192.16.1.94, 192.16.1.95, 192.16.1.96, 192.16.1.97, 192.16.1.98' and you are going to use 'root' user, hare are the commands to setup the variables:
 
 		export vHOSTS="192.16.1.94 192.16.1.95 192.16.1.96 192.16.1.97 192.16.1.98";
 		export vSSH_USER="root"
@@ -42,18 +42,18 @@ Conroller is the machine you will running all the commands from. Here are the st
     If you want to disable the firewall here is a script you can use for the same (Currently CentOS is supported). To access the script you will need to clone this repo as described in the next section:
     Once you cloned the repo you will need to run script as:
 
-        terraform-iac/scripts/vm/disable-firewall_CentOS.sh --disable
+        k8s-px-terraform/scripts/vm/disable-firewall_CentOS.sh --disable
 
 > If you want to check the current status just run without the `--disable` parameter.
 
 ### 2. Get the Terraform code from the repository
-Download the latest source from [git](https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git/) to have latest terraform-iac library. Alternatively, git pull command will bring the latest code if you already have the source code pulled
+Download the latest source from [git](https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git/) to have latest k8s-px-terraform library. Alternatively, git pull command will bring the latest code if you already have the source code pulled
 
 	git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git.git
 
 ### 3. Navigate to the 'scripts' folder and run script to setup the environment.
 
-	cd terraform-iac/scripts
+	cd k8s-px-terraform/scripts
 Execute the script to setup environment by replacing values accordingly:
 
 `./setup_env.sh <EnvironmentName> <UniqueIdForTheCluster> <ZoneName>`
@@ -142,10 +142,19 @@ Once all the variables have been configured, here is an example your file will l
 This will take 10-20 minutes to finish. This completes the creation of kubernetes cluster with Portworx.
 > Note: A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
 
-### 6. Once done, check if the cluster is UP.
+### 6. Check if everything is up and ready:
+To check nodes:
 
-	kubectl get nodes --kubeconfig=./kube-config-file;
-	kubectl get pods -n portworx --kubeconfig=./kube-config-file;
+	kubectl --kubeconfig=kube-config-file get nodes                          
+
+To check portworx pods:
+
+	kubectl --kubeconfig=kube-config-file get pods -n portworx 
+
+To check portworx cluster status:
+
+	PX_NS_AND_POD=$(kubectl --kubeconfig=kube-config-file get pods --no-headers -l name=portworx --all-namespaces -o jsonpath='{.items[*].metadata.ownerReferences[?(@.kind=="StorageCluster")]..name}' -o custom-columns="Col-1:metadata.namespace,Col-2:metadata.name" | head -1)
+	kubectl --kubeconfig=kube-config-file exec -n $PX_NS_AND_POD -c portworx -- /opt/pwx/bin/pxctl status
 
 ## Adding nodes to the cluster:
 To add a new node to the cluster you will need to run `add-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster.
