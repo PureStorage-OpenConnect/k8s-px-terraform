@@ -169,13 +169,13 @@ If all of the pods are up, next check portworx cluster status:
 ## Adding node to the cluster:
 
 To add a new node to the cluster you will need to run `add-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster. So navigate to the folder.
-> Note: The same ssh user will be used which you had provided while setting up the cluster. So make sure it is available on the new node if it was other thant the 'root' user.
+> Note: The same ssh user will be used which you had provided while setting up the cluster. So make sure it is available on the new node if it was other than the 'root' user.
 
-Here are the steps to add node:
+Here are the steps to add a new node:
 
 * Set variable with the IP of the node you are going to add
 
-		export HOST_IP="<AddIPofNode>";	
+		export HOST_IP="<AddIPofNode>";
 
 * Make sure the password-less ssh is setup. If not then run the below commands:
 
@@ -198,19 +198,24 @@ Here are the steps to add node:
 		kubectl --kubeconfig=kube-config-file get nodes
     
 ## Removing nodes from the cluster:
-To remove a node from the cluster you will need to run `remove-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster.
+To remove a node from the cluster you will need to run `remove-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster. So navigate to that folder follow these steps:
 
-    ./remove-node.sh <node-name-to-remove>
-    
-This example will remove the specified node from the cluster. Once above script finishes, check the nodes:
+* List the nodes and identify node name which you want to remove
 
-    kubectl get nodes --kubeconfig=./kube-config-file
+		kubectl --kubeconfig=kube-config-file get nodes
+* Run remove-node.sh script to remove the node.
 
-You will see the node has been removed from the cluster, finally remove the node from the node-groups in the inventory file:
+		./remove-node.sh <node-name-to-remove>
 
-    vim "kubespray/inventory/<your cluster name>/hosts.yaml"
-    
-> Make sure to remove the node from all groups.
+* This example will remove the specified node from the cluster. Once above script finishes, check the nodes:
+
+		kubectl --kubeconfig=./kube-config-file get nodes
+
+* You will see the node has been removed from the cluster, finally remove the node from the node-groups in the inventory file:
+
+		vim "kubespray/inventory/<your cluster name>/hosts.yaml"
+
+	> Make sure to remove the node from all groups.
 
 
 ## Cleanup steps:
