@@ -58,7 +58,7 @@ Navigate to the 'scripts' folder where all the scripts are saved:
 
 	cd k8s-px-terraform/scripts
 
-**Disable firewall:** If you want to disable the firewall you can use the following script (CentOS machies):
+**Disable firewall:** If you want to disable the firewall you can use the following script (CentOS machines):
 > If you want to check the current status just run without the `--disable` parameter.
 
 	./disable-firewall_CentOS.sh --disable
@@ -161,29 +161,41 @@ To check portworx pods:
 
 	kubectl --kubeconfig=kube-config-file get pods -n portworx 
 
-To check portworx cluster status:
+If all of the pods are up, next check portworx cluster status:
 
 	PX_NS_AND_POD=$(kubectl --kubeconfig=kube-config-file get pods --no-headers -l name=portworx --all-namespaces -o jsonpath='{.items[*].metadata.ownerReferences[?(@.kind=="StorageCluster")]..name}' -o custom-columns="Col-1:metadata.namespace,Col-2:metadata.name" | head -1)
-	kubectl --kubeconfig=kube-config-file exec -n $PX_NS_AND_POD -c portworx -- /opt/pwx/bin/pxctl status
+	kubectl --kubeconfig=kube-config-file exec -n ${PX_NS_AND_POD% *} ${PX_NS_AND_POD#* } -c portworx -- /opt/pwx/bin/pxctl status
 
-## Adding nodes to the cluster:
+## Adding node to the cluster:
 
-Make sure the passwordless ssh is setup. If not then run the below commands: 
+To add a new node to the cluster you will need to run `add-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster. So navigate to the folder.
+> Note: The same ssh user will be used which you had provided while setting up the cluster. So make sure it is available on the new node if it was other thant the 'root' user.
 
-	export vHOSTS="<AddIPofNode>";
-	export vSSH_USER="root"
-	for i in $vHOSTS ;do ssh-copy-id ${vSSH_USER}@${i}; done
+Here are the steps to add node:
+
+* Set variable with the IP of the node you are going to add
+
+		export HOST_IP="<AddIPofNode>";	
+
+* Make sure the password-less ssh is setup. If not then run the below commands:
+
+		ssh-copy-id $(. vars;echo $PX_ANSIBLE_USER)@${HOST_IP}
+
+* Test the passwordless ssh.
+
+		ssh -oBatchMode=yes $(. vars;echo $PX_ANSIBLE_USER)@${HOST_IP} 'sudo echo "Its working!"'
+
+* Disable the firewall with following script (For CentOS machines):
+
+		(vHOSTS=$HOST_IP; ../../../../scripts/disable-firewall_CentOS.sh --disable)
+
+* Run the `add-node.sh` script to beging add node process.
+
+		./add-node.sh ${HOST_IP}
+
+* When completed run check if node is available on the cluster:
 	
-Test the passwordless ssh.
-	
-	for i in $vHOSTS ;do ssh ${vSSH_USER}@${i} 'sudo hostname' ; done
-	
-
-To add a new node to the cluster you will need to run `add-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster.
-
-    ./add-node.sh <ipAddress>
-    
-This example will add a node with '192.16.1.98' IP to the cluster.
+		kubectl --kubeconfig=kube-config-file get nodes
     
 ## Removing nodes from the cluster:
 To remove a node from the cluster you will need to run `remove-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster.
