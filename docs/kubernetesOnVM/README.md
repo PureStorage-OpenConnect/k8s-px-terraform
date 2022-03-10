@@ -187,7 +187,7 @@ Here are the steps to add a new node:
 
 * Disable the firewall with following script (For CentOS machines):
 
-		(vHOSTS=$HOST_IP; ../../../../scripts/disable-firewall_CentOS.sh --disable)
+		(export vHOSTS=$HOST_IP; export vSSH_USER=$(. vars; echo $PX_ANSIBLE_USER); ../../../../scripts/disable-firewall_CentOS.sh --disable)
 
 * Run the `add-node.sh` script to beging add node process.
 
