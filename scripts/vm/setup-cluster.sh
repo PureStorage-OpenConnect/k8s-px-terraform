@@ -11,7 +11,7 @@ else
   echo "Using latest available Kubespray version."
 fi
 
-if [ ! -d kubespray ]; then
+if [ -d kubespray ]; then
   mv kubespray kubespray_$(date +%F_%H-%M-%S)
 fi
 
