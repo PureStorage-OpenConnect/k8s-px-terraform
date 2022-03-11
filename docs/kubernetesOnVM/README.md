@@ -62,10 +62,12 @@ Navigate to the 'scripts' folder where all the scripts are saved:
 > If you want to check the current status just run without the `--disable` parameter.
 
 	./disable-firewall_CentOS.sh --disable
+	
+Note: For Ubuntu the firewall if open by default and you do not need to run any script for it.
 
 Execute the script to setup environment by replacing values accordingly:
 
-`./setup_env.sh <EnvironmentName> <UniqueIdForTheCluster> <ZoneName>`
+`./setup_env.sh <EnvironmentName> <ClusterName> <Location>`
 
 Example:
 
