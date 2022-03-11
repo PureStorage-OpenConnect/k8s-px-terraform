@@ -10,8 +10,7 @@ spec:
   kvdb:
     internal: true
   storage:
-    forceUseDisks: true
-    useAllWithPartitions: true
+    useAll: true
     kvdbDevice: XX_PX_KVDB_DEVICE_XX
   secretsProvider: k8s
   stork:
