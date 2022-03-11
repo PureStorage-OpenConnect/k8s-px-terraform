@@ -65,7 +65,7 @@ Navigate to the 'scripts' folder where all the scripts are saved:
 
 Execute the script to setup environment by replacing values accordingly:
 
-`./setup_env.sh <EnvironmentName> <UniqueIdForTheCluster> <ZoneName>`
+`./setup_env.sh <EnvironmentName> <ClusterName> <Location>`
 
 Example:
 
