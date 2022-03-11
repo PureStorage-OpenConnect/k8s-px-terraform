@@ -12,8 +12,10 @@ else
 fi
 
 if [ ! -d kubespray ]; then
-  git clone ${KS_RELEASE_OPTS} https://github.com/kubernetes-sigs/kubespray.git
+  mv kubespray kubespray_$(date +%F_%H-%M-%S)
 fi
+
+git clone ${KS_RELEASE_OPTS} https://github.com/kubernetes-sigs/kubespray.git
 
 cd kubespray;
 pip3 install -r requirements.txt
@@ -25,7 +27,6 @@ if [ ! -d "inventory/${PX_CLUSTER_NAME}" ]; then
 fi
 
 python3 "contrib/inventory_builder/inventory.py" ${IPS[@]}
-
 
 if [[ "${PX_K8S_VERSION}" != "" ]]; then
   echo "Setting kubernetes version to ${PX_K8S_VERSION}."
