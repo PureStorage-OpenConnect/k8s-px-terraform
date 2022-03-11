@@ -28,3 +28,4 @@ echo "Installing Portworx storage cluster"
 echo "Creating storage classes"
 "${kbCtl}" --kubeconfig="${vKubeConfig}" apply -f "../../../../manifests/common/storage-classes.yml" ; sleep 30;
 
+${kbCtl} --kubeconfig="${vKubeConfig}" get nodes

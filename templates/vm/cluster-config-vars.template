@@ -9,8 +9,11 @@ PX_ANSIBLE_USER="XX_SSH_USER_XX"
 PX_METALLB_ENABLED="false"
 PX_METALLB_IP_RANGE="10.21.236.61-10.21.236.70"
 
-# Set Kubespray Version, Leave blank to use the latest available.
-PX_KUBESPRAY_VERSION="2.17"
+# Set Kubespray Version, Leave blank to use the latest available. e.g: "2.17"
+PX_KUBESPRAY_VERSION=""
+
+# Set Kubernetes Version, Leave blank to use the default supported by Kubespray. e.g: "v1.21.6"
+PX_K8S_VERSION=""
 
 # Specify the number of hosts to be used as Kubernetes control plane nodes.
 PX_KUBE_CONTROL_HOSTS=2
@@ -21,7 +24,7 @@ PX_CLUSTER_NAME="XX_CLUSTER_NAME_XX"
 # Set portworx operator version
 PX_OPERATOR_VERSION="1.6.1"
 
-# Set portworx storage cluster version
+# Set portworx storage cluster version. Use Major.Minor.Patch format, e.g: 2.9.0 is valid but 2.9 is not.
 PX_STORAGE_CLUSTER_VERSION="2.7.4"
 
 # Specify the device for KVDB. Leave blank to use the px storage for kvdb. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.

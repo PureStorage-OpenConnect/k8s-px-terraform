@@ -26,6 +26,15 @@ fi
 
 python3 "contrib/inventory_builder/inventory.py" ${IPS[@]}
 
+
+if [[ "${PX_K8S_VERSION}" != "" ]]; then
+  echo "Setting kubernetes version to ${PX_K8S_VERSION}."
+  sed -i_sedtmp "s,^kube_version: .*,kube_version: ${PX_K8S_VERSION},g" inventory/${PX_CLUSTER_NAME}/group_vars/k8s_cluster/k8s-cluster.yml
+  rm -f inventory/${PX_CLUSTER_NAME}/group_vars/k8s_cluster/k8s-cluster.yml_sedtmp
+else
+  echo "Using default supported kubernetes version."
+fi
+
 ansible all -i "inventory/${PX_CLUSTER_NAME}/hosts.yaml" -m ping -u"${PX_ANSIBLE_USER}" -b
 
 if [[ "${PX_METALLB_ENABLED}" == "true" ]]; then
@@ -49,6 +58,4 @@ cp -f "${kbCtl}"          ~/.local/bin/kubectl
 cp -f "${vKubeConfig}"    ~/.kube/config
 cp -f "${vKubeConfig}"    ./kube-config-file
 
-
 sleep 30
-${kbCtl} --kubeconfig="${vKubeConfig}" get nodes
