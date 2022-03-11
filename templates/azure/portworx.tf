@@ -1,13 +1,13 @@
 resource "null_resource" "install_portworx" {
   provisioner "local-exec" {
     command = <<-EOT
-      export KUBECONFIG="${PWD}/kube-config-file"
+      export KUBECONFIG="$PWD/kube-config-file"
       if [ -f ~/.kube/config ]; then
          mv ~/.kube/config ~/.kube/config_$(date +%F_%H-%M-%S)
       fi
       sleep 30
       az aks get-credentials -n ${var.cluster_name} --resource-group "px-${var.resource_group}"
-      cp ${PWD}/kube-config-file  ~/.kube/config
+      cp $PWD/kube-config-file  ~/.kube/config
       sleep 5
       kubectl create namespace portworx
       kubectl create secret generic -n portworx px-azure \
