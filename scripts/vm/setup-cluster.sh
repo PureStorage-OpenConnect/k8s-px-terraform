@@ -35,13 +35,19 @@ else
   echo "Using default supported kubernetes version."
 fi
 
-ansible all -i "inventory/${PX_CLUSTER_NAME}/hosts.yaml" -m ping -u"${PX_ANSIBLE_USER}" -b
+ansible all -i "${CONFIG_FILE}" -m ping -u"${PX_ANSIBLE_USER}" -b
+
+PX_KVDB_DEVICE="$(echo "${PX_KVDB_DEVICE}" | tr '[:upper:]' '[:lower:]'|xargs)";
+
+if [[ "${PX_KVDB_DEVICE}" == "auto" ]]; then 
+  ansible-playbook -i "${CONFIG_FILE}" ../kvdb-dev.yaml -u"${PX_ANSIBLE_USER}" -b -e "nodes=all" -e "opr=create"
+fi
 
 if [[ "${PX_METALLB_ENABLED}" == "true" ]]; then
   vMETALLB_VARS="{\"metallb_ip_range\": [\"${PX_METALLB_IP_RANGE}\"]}"
-  ansible-playbook -i "inventory/${PX_CLUSTER_NAME}/hosts.yaml" "cluster.yml" -u"${PX_ANSIBLE_USER}" -b --extra-vars "kubeconfig_localhost=true kubectl_localhost=true kube_proxy_strict_arp=true metallb_enabled=true" --extra-vars "${vMETALLB_VARS}"
+  ansible-playbook -i "${CONFIG_FILE}" "cluster.yml" -u"${PX_ANSIBLE_USER}" -b --extra-vars "kubeconfig_localhost=true kubectl_localhost=true kube_proxy_strict_arp=true metallb_enabled=true" --extra-vars "${vMETALLB_VARS}"
 else
-  ansible-playbook -i "inventory/${PX_CLUSTER_NAME}/hosts.yaml" "cluster.yml" -u"${PX_ANSIBLE_USER}" -b --extra-vars "kubeconfig_localhost=true kubectl_localhost=true"
+  ansible-playbook -i "${CONFIG_FILE}" "cluster.yml" -u"${PX_ANSIBLE_USER}" -b --extra-vars "kubeconfig_localhost=true kubectl_localhost=true"
 fi 
 
 cd ..
