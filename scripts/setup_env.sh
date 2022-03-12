@@ -21,8 +21,15 @@ display_help() {
 CLOUD_ENV=$1
 CLOUD_ACCT=$2
 CLOUD_REGION=$3
+
+
+if [[ "${CLOUD_ENV}" == "baremetal" ]]; then
+  TEMPLATE_DIR="../templates/vm"
+else
+  TEMPLATE_DIR="../templates/${CLOUD_ENV}"
+fi
+
 TF_DIR="../terraform-live/${CLOUD_ENV}/${CLOUD_ACCT}/${CLOUD_REGION}"
-TEMPLATE_DIR="../templates/${CLOUD_ENV}"
 
 echo
 if [[ -z $CLOUD_ENV || -z $CLOUD_ACCT || -z $CLOUD_REGION ]]; then
