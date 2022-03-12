@@ -1,10 +1,10 @@
-# Set up Kubernetes cluster on Virtual Machines using Tarraform+Kubespray
+# Set up Kubernetes cluster on Bare-Metal Machines using Tarraform+Kubespray
 
-We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx on Virtual Machines.
+We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx on these machines.
 
 ### Pre-requisites:
 
-- Virtual Machines running with CentOS or Ubuntu and the configuration must meet the minimum [requirements for Portworx](https://docs.portworx.com/start-here-installation/). Portworx requires minimum 3 worker nodes to run. All machines must have 4CPUs and 4GB of RAM.
+- Machines running with CentOS or Ubuntu and the configuration must meet the minimum [requirements for Portworx](https://docs.portworx.com/start-here-installation/). Portworx requires minimum 3 worker nodes to run. All machines must have 4CPUs and 4GB of RAM.
 - Additional (unmounted) hard drives attached to the worker nodes for the Portworx storage and kvdb device.
 - Disable the firewall so machines can connect to each other (A script is provided for CentOS to disable the firewall). If you do not want to  disable the firewall then you can allow the TCP ports at 9001-9022 and UDP port at 9002. Read the network section for more information in [portworx documentation](https://docs.portworx.com/start-here-installation/).
 - You will need to use a machine as controller. This conroller must be able to connect to all the machines with password-less ssh (Steps are provided to setup passwordless ssh).
@@ -63,7 +63,7 @@ Navigate to the 'scripts' folder where all the scripts are saved:
 
 	./disable-firewall_CentOS.sh --disable
 	
-Note: For Ubuntu the firewall if open by default and you do not need to run any script for it.
+Note: For Ubuntu the firewall is open by default and you do not need to run any script for it.
 
 Execute the script to setup environment by replacing values accordingly:
 
@@ -71,7 +71,7 @@ Execute the script to setup environment by replacing values accordingly:
 
 Example:
 
-    ./setup_env.sh vm px-cluster01 ps-lab-01
+    ./setup_env.sh baremetal px-cluster01 ps-lab-01
 
    The script will create directory structure for the project. Once completed you will be in a new shell where you will see files like:
 
