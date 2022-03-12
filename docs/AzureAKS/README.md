@@ -33,7 +33,7 @@ If you already have the repo downloaded, git pull command will bring the latest 
     git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git
 ```
 
-### Step 3. Setup Azure Azure Credentials
+### Step 3. Setup Azure Credentials
 
 ```
 - run "az version"
@@ -48,7 +48,7 @@ Returns the following for example:
 }
 ```
 
-### Login to Azure && Set Subscription
+### Login to Azure & Set Subscription
 
 ```
 #login and follow prompts
