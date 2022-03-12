@@ -97,7 +97,9 @@ Edit the file `cluster-config-vars` and then set the values for variables as:
 
 **PX_METALLB_IP_RANGE** - If 'PX_METALLB_ENABLED' is set to true, provide an IP Range for MetalLB from the current network subnet. MetalLB will assign IPs from this range. It will be ignored if  'PX_METALLB_ENABLED' is set to false.
 
-**PX_KUBESPRAY_VERSION** - Set the Kubespray version.
+**PX_KUBESPRAY_VERSION** - Set the Kubespray version. Check out available [versions](https://github.com/kubernetes-sigs/kubespray) and click on the branches drop-down menu. You will see branches for differnt releases like **release-2.17**. Note down the available release name you want to use and put here the number only. e.g 2.17
+
+**PX_K8S_VERSION** - Set Kubernetes Version. e.g: "v1.21.6". Leave blank to use the default supported by your selected Kubespray version. Please note that the  version number must be equal to or greater than the minimum suported by Kubespray and it must be less than (not equal to) supported by kubespray for example kubespray 2.18 support v1.22.6 by default and minimum support version is v1.20.0, so you can select any version from v1.20.0 to v1.22.5. If you want to use the v1.22.6 version just leave this variable blank. e.g. "". For other versions use appropriate kubespray version. Check out kubespray [documentation](https://github.com/kubernetes-sigs/kubespray) for more information.
 
 **PX_KUBE_CONTROL_HOSTS** - Specify the number of hosts to be used as Kubernetes control plane nodes.
 >NOTE:
@@ -111,38 +113,46 @@ Edit the file `cluster-config-vars` and then set the values for variables as:
 **PX_STORAGE_CLUSTER_VERSION** - To specify the portworx storage cluster version. 
 > Note: Make sure version is in 3 digits i.e 2.9.0
 
-**PX_KVDB_DEVICE** - Specify the device for KVDB. Leave blank to share the portworx storage with kvdb. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
+**PX_KVDB_DEVICE** - Specify the device for KVDB. Here are the options for this variable:
 
+* A device name: You can provide a device name which must be available on all of the nodes in the cluster. E.g: "/dev/sdb"
+* auto: If it is set to 'auto', the smallest blank drive available on each node will be used as kvdb device.
+* Leave Blank (e.g. ""): If you leave it blank, the kvdb will share the px storage. But it is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
 
 Once all the variables have been configured, your file will look as the following example:
 
 	# Specify the hostnames and IP of the nodes.
-	PX_HOST_IPS="linux-host01.puretec.purestorage.com,10.21.152.93 linux-host02.puretec.purestorage.com,10.21.152.94 linux-host03.puretec.purestorage.com,10.21.152.95 linux-host04.puretec.purestorage.com,10.21.152.96 linux-host05.puretec.purestorage.com,10.21.152.97 linux-host06.puretec.purestorage.com,10.21.152.98";
-	
+	PX_HOST_IPS="linux-host02.puretec.purestorage.com,10.21.152.94 linux-host03.puretec.purestorage.com,10.21.152.95 linux-host04.puretec.purestorage.com,10.21.152.96 linux-host05.puretec.purestorage.com,10.21.152.97 linux-host06.puretec.purestorage.com,10.21.152.98"
+
 	# Specify the ssh user Ansible will use. It must be root or a sudo user who is able run run sudo command without requiring to the password.
-	PX_ANSIBLE_USER="root";
-	
-	# Enabled MetalLB load-balancer.
-	PX_METALLB_ENABLED="true"
+	PX_ANSIBLE_USER="root"
+
+	# Enabled MetalLB load-balancer. If enabled, also provide an IP range from the current subnet.
+	# MetalLB will assign IPs from this range. 'PX_METALLB_IP_RANGE' will be ignored if 'PX_METALLB_ENABLED' is set to 'false' 
+	PX_METALLB_ENABLED="false"
 	PX_METALLB_IP_RANGE="10.21.236.61-10.21.236.70"
-	
-	# Set Kubespray Version
-	PX_KUBESPRAY_VERSION=2.17
-	
+
+	# Set Kubespray Version, Leave blank to use the latest available. e.g: "2.17"
+	PX_KUBESPRAY_VERSION="2.18"
+
+	# Set Kubernetes Version, Leave blank to use the default supported by Kubespray. e.g: "v1.21.6"
+	PX_K8S_VERSION="v1.22.6"
+
 	# Specify the number of hosts to be used as Kubernetes control plane nodes.
-	PX_KUBE_CONTROL_HOSTS=1
-	
+	PX_KUBE_CONTROL_HOSTS=2
+
 	# ClusterName
-	PX_CLUSTER_NAME="px-cluster01"
-	
+	PX_CLUSTER_NAME="px-cluster02"
+
 	# Set portworx operator version
 	PX_OPERATOR_VERSION="1.6.1"
-	
-	# Set portworx storage cluster version. Note: Make sure version number is 3 digits.
-	PX_STORAGE_CLUSTER_VERSION="2.9.0"    
-	
-	# Specify the device for KVDB. Leave blank to share the px storage for kvdb. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
-	PX_KVDB_DEVICE="/dev/sdb";
+
+	# Set portworx storage cluster version. Use Major.Minor.Patch format, e.g: 2.9.0 is valid but 2.9 is not.
+	PX_STORAGE_CLUSTER_VERSION="2.7.4"
+
+	# Specify the device for KVDB. If it is set to 'auto', the smallest blank drive available on each node will be used as kvdb device.
+	# If you leave it blank, the kvdb will share the px storage.
+	PX_KVDB_DEVICE="auto"
 
 ### 5. Run the following terraform commands to begin the cluster setup.
 
