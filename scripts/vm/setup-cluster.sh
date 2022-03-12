@@ -29,6 +29,7 @@ fi
 python3 "contrib/inventory_builder/inventory.py" ${IPS[@]}
 
 if [[ "${PX_K8S_VERSION}" != "" ]]; then
+  PX_K8S_VERSION="v${PX_K8S_VERSION}"
   echo "Setting kubernetes version to ${PX_K8S_VERSION}."
   sed -i_sedtmp "s,^kube_version: .*,kube_version: ${PX_K8S_VERSION},g" inventory/${PX_CLUSTER_NAME}/group_vars/k8s_cluster/k8s-cluster.yml
   rm -f inventory/${PX_CLUSTER_NAME}/group_vars/k8s_cluster/k8s-cluster.yml_sedtmp
