@@ -41,7 +41,7 @@ LOG_FILE="$(pwd)/debug.log"
   printf "Successful!\n" >> "${LOG_FILE}"
 
   printf "Checking if host is a member of the k8s cluster: " >> "${LOG_FILE}"
-  ${kbCtl} --kubeconfig="${vKubeConfig}" get nodes ${HOST_TO_REMOVE} 2>> "${LOG_FILE}" >/dev/null &&
+  ${kbCtl} --kubeconfig="../${vKubeConfig}" get nodes ${HOST_TO_REMOVE} 2>> "${LOG_FILE}" >/dev/null &&
       printf "Successful!\n" >> "${LOG_FILE}" || \
       { printf "\n\n"; printf "Node '${HOST_TO_REMOVE}' is not a member of the cluster.\n\n" | tee  -a "${LOG_FILE}"; exit 1; }
 
@@ -60,7 +60,7 @@ LOG_FILE="$(pwd)/debug.log"
   printf "Successful!\n" >> "${LOG_FILE}"
 
   printf "Find a portworx pod: " >> "${LOG_FILE}"
-  PX_POD="$(${kbCtl} --kubeconfig="${vKubeConfig}" get pods --no-headers -l name=portworx -n portworx -o wide | grep -v ${HOST_TO_REMOVE} | xargs | cut -f1 -d' ')"
+  PX_POD="$(${kbCtl} --kubeconfig="../${vKubeConfig}" get pods --no-headers -l name=portworx -n portworx -o wide | grep -v ${HOST_TO_REMOVE} | xargs | cut -f1 -d' ')"
   printf "${PX_POD}\n" >> "${LOG_FILE}"
 
   CONFIRMATION=n
@@ -76,7 +76,7 @@ LOG_FILE="$(pwd)/debug.log"
   done
   
   printf "Checking if node is a member of the Portworx cluster: " >> "${LOG_FILE}"
-  PX_NODE="$(${kbCtl} --kubeconfig="${vKubeConfig}" exec -n portworx $PX_POD -c portworx -- /opt/pwx/bin/pxctl cluster list 2>/dev/null | grep -A100 "Nodes in the cluster:"| grep "${HOST_TO_REMOVE}" |xargs | cut -f2 -d' ' || true)"
+  PX_NODE="$(${kbCtl} --kubeconfig="../${vKubeConfig}" exec -n portworx $PX_POD -c portworx -- /opt/pwx/bin/pxctl cluster list 2>/dev/null | grep -A100 "Nodes in the cluster:"| grep "${HOST_TO_REMOVE}" |xargs | cut -f2 -d' ' || true)"
   if [[ "${PX_NODE}" != "" ]]; then
     printf -- "Yes!\n" >> "${LOG_FILE}"
     printf "\n"
@@ -90,14 +90,14 @@ LOG_FILE="$(pwd)/debug.log"
     printf -- "Done!\n" >> "${LOG_FILE}"
 
     printf "Setting host as 'cordoned': " >> "${LOG_FILE}"
-    ${kbCtl} --kubeconfig="${vKubeConfig}" cordon ${HOST_TO_REMOVE} > /dev/null 2>&1
-    ${kbCtl} --kubeconfig="${vKubeConfig}" get nodes ${HOST_TO_REMOVE} -o jsonpath='{.spec.unschedulable}{"\n"}' >> "${LOG_FILE}" 2> /dev/null|| printf "Unable to set cordon, Ignoring.\n"  >> "${LOG_FILE}"
+    ${kbCtl} --kubeconfig="../${vKubeConfig}" cordon ${HOST_TO_REMOVE} > /dev/null 2>&1
+    ${kbCtl} --kubeconfig="../${vKubeConfig}" get nodes ${HOST_TO_REMOVE} -o jsonpath='{.spec.unschedulable}{"\n"}' >> "${LOG_FILE}" 2> /dev/null|| printf "Unable to set cordon, Ignoring.\n"  >> "${LOG_FILE}"
 
     printf "Setting label on the node to remove portworx from the host.\n" >> "${LOG_FILE}"
-    ${kbCtl} --kubeconfig="${vKubeConfig}" label nodes ${HOST_TO_REMOVE} px/enabled=false --overwrite  > /dev/null 2>&1
+    ${kbCtl} --kubeconfig="../${vKubeConfig}" label nodes ${HOST_TO_REMOVE} px/enabled=false --overwrite  > /dev/null 2>&1
     
     printf "Getting portworx node UID: " >> "${LOG_FILE}"
-    NODE_UID="$(${kbCtl} --kubeconfig="${vKubeConfig}" get storagenodes.core.libopenstorage.org ${HOST_TO_REMOVE} -n portworx -o jsonpath={.status.nodeUid} 2>/dev/null)" || true
+    NODE_UID="$(${kbCtl} --kubeconfig="../${vKubeConfig}" get storagenodes.core.libopenstorage.org ${HOST_TO_REMOVE} -n portworx -o jsonpath={.status.nodeUid} 2>/dev/null)" || true
     printf "${NODE_UID}\n" >> "${LOG_FILE}"
     sleep 10
 
@@ -112,7 +112,7 @@ LOG_FILE="$(pwd)/debug.log"
     printf -- "Finished!\n" >> "${LOG_FILE}"
 
     printf "Removing node from the portworx storage cluster if available: " >> "${LOG_FILE}"
-    ${kbCtl} --kubeconfig="${vKubeConfig}" exec -n portworx $PX_POD -c portworx -- /opt/pwx/bin/pxctl cluster delete ${NODE_UID} >>"${LOG_FILE}" 2>&1 || true
+    ${kbCtl} --kubeconfig="../${vKubeConfig}" exec -n portworx $PX_POD -c portworx -- /opt/pwx/bin/pxctl cluster delete ${NODE_UID} >>"${LOG_FILE}" 2>&1 || true
     printf -- "Done!\n" >> "${LOG_FILE}"
   else
     printf -- "No!\n" >> "${LOG_FILE}"
@@ -122,9 +122,9 @@ LOG_FILE="$(pwd)/debug.log"
   #Gathering facts
     ansible -i "${CONFIG_FILE}" -m  setup all > /dev/null
   #Removing
-    ansible-playbook -i "${CONFIG_FILE}" remove-node.yml -u"${PX_ANSIBLE_USER}" -b -e "node=${HOST_TO_REMOVE}" -e "skip_confirmation=yes"
+    ansible-playbook -i "${CONFIG_FILE}" ../kvdb-dev.yaml -u"${PX_ANSIBLE_USER}" -b -e "nodes=${HOST_TO_REMOVE}" -e "opr=delete"
+    ansible-playbook -i "${CONFIG_FILE}" remove-node.yml  -u"${PX_ANSIBLE_USER}" -b -e "node=${HOST_TO_REMOVE}" -e "skip_confirmation=yes"
 
 cd ..
 sleep 5
 ${kbCtl} --kubeconfig="${vKubeConfig}" get nodes
-
