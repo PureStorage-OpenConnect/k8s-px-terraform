@@ -113,8 +113,11 @@ Edit the file `cluster-config-vars` and then set the values for variables as:
 **PX_STORAGE_CLUSTER_VERSION** - To specify the portworx storage cluster version. 
 > Note: Make sure version is in 3 digits i.e 2.9.0
 
-**PX_KVDB_DEVICE** - Specify the device for KVDB. If it is set to 'auto', the smallest blank drive available on each node will be used as kvdb device. If you leave it blank, the kvdb will share the px storage. It is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
+**PX_KVDB_DEVICE** - Specify the device for KVDB. Here are the options for this variable:
 
+* A device name: You can provide a device name which must be available on all of the nodes in the cluster. E.g: "/dev/sdb"
+* auto: If it is set to 'auto', the smallest blank drive available on each node will be used as kvdb device.
+* Leave Blank (e.g. ""): If you leave it blank, the kvdb will share the px storage. But it is recommended to provide a separate device for storing internal KVDB data for production clusters. This allows to separate KVDB I/O from storage I/O.
 
 Once all the variables have been configured, your file will look as the following example:
 
