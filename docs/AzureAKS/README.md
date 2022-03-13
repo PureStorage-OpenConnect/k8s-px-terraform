@@ -2,7 +2,7 @@
 
 ## PreRequisite
 
-1. Please see docs/azureIAMSteps/[README.md](../azureIAMSteps/README.md) for instruction on installing all the required softwares
+1. Please see docs/azureAdmin/[README.md](../azureAdmin/README.md) for instruction on installing all the required softwares
    
 2. Ensure the Azure user is provisioned with the required permissions to provision
    
