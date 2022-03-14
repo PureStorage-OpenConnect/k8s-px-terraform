@@ -223,7 +223,7 @@ To remove a node from the cluster you will need to run `remove-node.sh` script. 
 
 		kubectl --kubeconfig=./kube-config-file get nodes
 
-* You will see the node has been removed from the cluster, finally remove the node from the node-groups in the inventory file:
+* You will see the node has been removed from the cluster, finally remove the node from the node-groups in the inventory file manually:
 
 		vim "kubespray/inventory/<your cluster name>/hosts.yaml"
 
