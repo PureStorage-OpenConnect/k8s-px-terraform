@@ -44,7 +44,7 @@ step 2) az account list -o table (this command will output subscription ids)
 
 step 3) Execute the script to provision service account
 
-        ./setup_gcp_project.sh <tenant-id> <subscription-id>
+        ./setup_azure_service_principal.sh <tenant-id> <subscription-id>
 
 ```
 
