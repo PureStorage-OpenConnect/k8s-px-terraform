@@ -29,9 +29,9 @@ if [[ "${OPERATION}" == "create" ]]; then
 
       echo -e "Creating $DSK_NAME for Portworx KVDB LVM."
       DEV="/dev/$DSK_NAME"
-      pvcreate $DEV
-      vgcreate ${PX_VG_NAME} $DEV
-      lvcreate -l 100%FREE -n ${PX_LV_NAME} ${PX_VG_NAME}
+      pvcreate -y  $DEV
+      vgcreate -y ${PX_VG_NAME} $DEV
+      lvcreate -y -l 100%FREE -n ${PX_LV_NAME} ${PX_VG_NAME}
     else
       echo "No device found to create Portworx KVDB LVM device!"
     fi
@@ -42,14 +42,22 @@ elif [[ "${OPERATION}" == "delete" ]]; then
   DEV=$(lvs --select vg_name=${PX_VG_NAME} -o devices |tail -1 | xargs | sed 's,(.*),,g'||true)
   if [[ "${DEV}" != "" ]]; then 
     echo "Deleting Portworx KVDB LVM device: '/dev/${PX_VG_NAME}/${PX_LV_NAME}'"
-    lvremove -y /dev/${PX_VG_NAME}/${PX_LV_NAME}
-    vgremove ${PX_VG_NAME}
-    pvremove $DEV
+    systemctl stop portworx
+    systemctl disable portworx
+    rm -f /etc/systemd/system/portworx*
+    grep -q '/opt/pwx/oci /opt/pwx/oci' /proc/self/mountinfo && umount /opt/pwx/oci
+    pxctl service node-wipe --all
+ ## No need to execute following lines, pxctl service node-wipe --all is taking care of those.
+    #  lvremove -y /dev/${PX_VG_NAME}/${PX_LV_NAME}
+    #  vgremove ${PX_VG_NAME}
+    #  pvremove $DEV
     wipefs -a $DEV
   else
-    echo "Portworx KVDB LVM device does not exist!"
+    echo "Portworx KVDB LVM device does not exist."
+    exit 0
   fi
 else
   echo -e "\nUnknown or missing parameter!";  echo -e "\nUsage:\n  $0 [create|delete]\n"
   exit 1
 fi
+exit 0;

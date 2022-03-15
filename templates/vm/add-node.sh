@@ -30,7 +30,6 @@ cd kubespray;
     timeout 5 ssh ${PX_ANSIBLE_USER}@${i} "true" || { printf "\nSSH Connection failed: ${PX_ANSIBLE_USER}@${i}\n\nMake sure the ssh user and the ip is correct and password-less ssh is set up correctly.\n\n"; exit 1; } 
   done
 
-
 vRETURN=$(for i in $HOST_IPS ;do ssh ${PX_ANSIBLE_USER}@${i} 'printf $(hostname -f)';printf ",${i} " ; done | xargs)
 declare -a IPS=(${vRETURN})
 
@@ -38,7 +37,13 @@ declare -a IPS=(${vRETURN})
   python3 "contrib/inventory_builder/inventory.py" add ${IPS[@]}
   ansible all -i "${CONFIG_FILE}" -m ping -u"${PX_ANSIBLE_USER}" -b
   ansible-playbook -i "${CONFIG_FILE}" "facts.yml" -u"${PX_ANSIBLE_USER}" -b 
-  
+
+  vNODES=$(for i in $HOST_IPS ;do ssh ${PX_ANSIBLE_USER}@${i} 'printf $(hostname -f)';printf "," ; done | xargs|sed 's/,$//g')
+
+  if [[ "${PX_KVDB_DEVICE}" == "auto" ]]; then
+    ansible-playbook -i "${CONFIG_FILE}" ../kvdb-dev.yaml -u"${PX_ANSIBLE_USER}" -b -e "nodes=${vNODES}" -e "opr=create"
+  fi
+
   if [[ "${PX_METALLB_ENABLED}" == "true" ]]; then
     vMETALLB_VARS="{\"metallb_ip_range\": [\"${PX_METALLB_IP_RANGE}\"]}"
     ansible-playbook -i "${CONFIG_FILE}" "scale.yml" -u"${PX_ANSIBLE_USER}" -b --extra-vars "kubeconfig_localhost=true kubectl_localhost=true kube_proxy_strict_arp=true metallb_enabled=true" --extra-vars "${vMETALLB_VARS}"

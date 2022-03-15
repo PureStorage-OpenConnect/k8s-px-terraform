@@ -2,7 +2,9 @@
 - hosts: "{{ nodes }},!kube_control_plane"
   tasks:
     - name: Copy and Execute the LVM script 
-      script: find-kvdb-dev.sh "{{ opr }}"
+      script: 
+        cmd: find-kvdb-dev.sh "{{ opr }}"
+        executable: /bin/bash
       register: results
     - debug:
         var: results.stdout
