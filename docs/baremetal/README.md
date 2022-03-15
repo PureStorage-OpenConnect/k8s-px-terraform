@@ -156,6 +156,8 @@ Once all the variables have been configured, your file will look as the followin
 
 ### 5. Run the following terraform commands to begin the cluster setup.
 
+> Note: If you are reusing hosts that were previously members of another Kubernetes cluster, be sure to reboot them once.
+
 	terraform init;
 	terraform validate;
 	terraform plan -out plan.out;
@@ -181,7 +183,10 @@ If all of the pods are up, next check portworx cluster status:
 ## Adding node to the cluster:
 
 To add a new node to the cluster you will need to run `add-node.sh` script. The script exists in the same folder where you ran the terraform commands to create the cluster. So navigate to the folder.
-> Note: The same ssh user will be used which you had provided while setting up the cluster. So make sure it is available on the new node if it was other than the 'root' user.
+
+> Note-1: If you are re-adding the host that was previously a member of another Kubernetes cluster, be sure to reboot it once.
+
+> Note-2: The same ssh user will be used which you had provided while setting up the cluster. So make sure it is available on the new node if it was other than the 'root' user.
 
 Here are the steps to add a new node:
 
