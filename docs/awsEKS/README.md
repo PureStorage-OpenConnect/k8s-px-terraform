@@ -138,7 +138,7 @@ number_of_nodes              = "4"          // # of nodes
 ec2_instance_type            = "c5a.xlarge" // Valid EC2 machine name
 purestorage_aws_keypair      = "purestorage-px-eks-kp" // AWS Keypair name (not the .pem filename)
 project_name                 = "pxProject"  // Unique Project name
-cluster_name                 = "px_demo"    // Unique Cluster Name
+cluster_name                 = "px_demo"    // Unique Cluster Name, cannot exceed 25 characters
 k8s_version                  = "1.21"       // Kubernetes Engine Version
 px_operator_version          = "1.6.1"      // portworx operator version
 
