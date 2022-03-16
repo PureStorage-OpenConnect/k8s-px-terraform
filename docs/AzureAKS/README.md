@@ -24,6 +24,7 @@ Upon running the script the following software/tools will be installed that is r
 2. GIT
 3. Azure CLI
 4. Kubectl
+5. JQ
 
 For additional details and instructions on above installing above softwares are defined at [readme.md](../../README.md)
 
