@@ -85,7 +85,7 @@ All parameters needs to be entered in "TERRAFORM.TFVARS" file
 ```
 ### Step 5. Configure terraform.tfvars [parameters]
 	
-Please use the below command to find list of Azure regions and avaliability zones list
+Please use the below command to find list of Azure regions and availability zones list
 	
 ```	
 	 az account list-locations -o table
