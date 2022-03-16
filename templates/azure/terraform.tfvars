@@ -1,5 +1,5 @@
 azure_location                 = "AZURE_LOCATION_ID" //eastus
-resource_group                 = "demo-res-grp"      // prepends with px-
+resource_group                 = "demo-res-grp"      // prepends with px- Replace this value with your own resource group name
 
 cluster_name                   = "px-test-cluster1"
 k8s_version                    = "1.21.7"
