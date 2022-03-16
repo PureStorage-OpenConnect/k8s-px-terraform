@@ -180,6 +180,21 @@ installKubeCTL() {
   fi
 }
 
+installJQ() {
+  echo 'Checking JQ version'
+    if ! jq=true; then
+    echo "JQ not found.. installing now.."
+    if [[ "$(uname -s)" == Linux ]]; then
+      sudo yum install jq 
+    elif [[ "$(uname -s)" == Darwin ]]; then 
+      brew install jq
+    fi
+    echo 'JQ Installation is completed...'
+  else
+    echo 'JQ found.. no updates are made'
+  fi
+}
+
 source ~/.bashrc
 
 checkRqdAppsAndVars() {
@@ -260,6 +275,8 @@ echo ''
 installAzureCLI
 echo ''
 installKubeCTL
+echo ''
+installJQ
 
 echo "$(date) - Script completed successfully"
 
