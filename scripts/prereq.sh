@@ -182,7 +182,7 @@ installKubeCTL() {
 
 installJQ() {
   echo 'Checking JQ version'
-    if ! jq=true; then
+    if ! jq --version=true; then
     echo "JQ not found.. installing now.."
     if [[ "$(uname -s)" == Linux ]]; then
       sudo yum install jq 
