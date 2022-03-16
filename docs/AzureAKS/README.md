@@ -1,5 +1,10 @@
 # Step by Step Guide to install Azure AKS with Portworx
 
+```
+If you have completed the GKE admin setup, please go to step #4
+
+```
+
 ## PreRequisite
 
 1. Please see docs/azureAdmin/[README.md](../azureAdmin/README.md) for instruction on installing all the required softwares
