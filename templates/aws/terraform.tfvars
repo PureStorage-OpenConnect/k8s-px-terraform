@@ -1,8 +1,8 @@
 region                       = "aws_region_id"
 number_of_nodes              = "4"
 ec2_instance_type            = "c5a.xlarge"
-purestorage_aws_keypair      = ""
-cluster_name                 = "purestorage_demo"
+purestorage_aws_keypair      = "<Enter your keypair>"
+cluster_name                 = "<Enter your custom cluster name>"     //The name must be unique across all regions. Cluster name cannot exceed 25 characters
 k8s_version                  = "1.21"
 
 # Portworx Specific
