@@ -30,6 +30,9 @@ echo -e "$(date) - tenant_id       :   ${TENANT_ID}"
 echo -e "$(date) - subscription_id :   ${SUBSCRIPTION_ID}"
 echo
 
+#create the folder for the keys and set the variable
+FOLDER=$(dirname "$0")/keys
+mkdir -p -m 700 "$FOLDER"
 
 
 # Set the subscription to run az commands against
