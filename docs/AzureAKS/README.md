@@ -83,9 +83,15 @@ All parameters needs to be entered in "TERRAFORM.TFVARS" file
 
 ```
 ### Step 5. Configure terraform.tfvars [parameters]
-
+	
+Please use the below command to find list of Azure regions and avaliability zones list
+	
+```	
+	 az account list-locations -o table
+```
+	
 Edit the file - vi or nano terraform.tfvars and replace the mandatory parameters to create the cluster
-
+	
 ```
 azure_location                 = "AZURE_LOCATION_ID" //ex: eastus - auto-populates based on the setup_env.sh parameter
 resource_group                 = "demo-res-grp"      // prepends with px-
