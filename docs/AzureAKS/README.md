@@ -193,7 +193,7 @@ terraform apply "plan.out"
 ## Clean up 
 
 Step 1: 
-Configure Kubeconfig to the EKS cluster that you would like to clean up
+Configure Kubeconfig to the AKS cluster that you would like to clean up
 
 ```
         export KUBECONFIG="$PWD/kube-config-file"
