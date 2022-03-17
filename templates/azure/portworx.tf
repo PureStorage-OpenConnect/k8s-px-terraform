@@ -7,7 +7,7 @@ resource "null_resource" "install_portworx" {
       fi
       sleep 30
       az aks get-credentials -n ${var.cluster_name} --resource-group "px-${var.resource_group}"
-      cp ~/.kube/config $PWD/kube-config-file
+      cp $PWD/kube-config-file ~/.kube/config
       sleep 5
       kubectl create namespace portworx
       kubectl create secret generic -n portworx px-azure \

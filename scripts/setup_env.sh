@@ -77,11 +77,13 @@ elif [[ $CLOUD_ENV == "gcloud" ]]; then
   
 elif [[ $CLOUD_ENV == "azure" ]]; then
   SSH_PublicKey=$(cat ~/.ssh/id_rsa.pub)
-  SERVICE_PRINCIPAL_JSON=$(az ad sp create-for-rbac --skip-assignment --name ps-aks-service-account -o json)
+  SUBSCRIPTION_ID="$(az account show | jq -r '.id')"
+  SERVICE_PRINCIPAL_JSON=$(cat ./keys/azure-px-ops-service-principal.json)
   SERVICE_PRINCIPAL_APPID=$(echo "$SERVICE_PRINCIPAL_JSON" | jq -r '.appId')
   SERVICE_PRINCIPAL_SECRET=$(echo "$SERVICE_PRINCIPAL_JSON" | jq -r '.password')
   SERVICE_PRINCIPAL_TENANT=$(echo "$SERVICE_PRINCIPAL_JSON" | jq -r '.tenant')
   
+  sed -ie "s/Subscription_ID/${SUBSCRIPTION_ID}/g" "${TF_DIR}/terraform.tfvars"
   sed -ie "s/AZURE_LOCATION_ID/${CLOUD_REGION}/g" "${TF_DIR}/terraform.tfvars"
   sed -ie "s/SvcPID/${SERVICE_PRINCIPAL_APPID}/g" "${TF_DIR}/terraform.tfvars"
   sed -ie "s/SvcPKEY/${SERVICE_PRINCIPAL_SECRET}/g" "${TF_DIR}/terraform.tfvars"
