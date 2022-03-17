@@ -182,7 +182,7 @@ installKubeCTL() {
 
 installJQ() {
   echo 'Checking JQ version'
-    if ! jq --version=true; then
+    if ! jq --version; then
     echo "JQ not found.. installing now.."
     if [[ "$(uname -s)" == Linux ]]; then
       if [[ "${LINUX_DISRO}" == "CENTOS" ]]; then
