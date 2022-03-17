@@ -185,7 +185,11 @@ installJQ() {
     if ! jq --version=true; then
     echo "JQ not found.. installing now.."
     if [[ "$(uname -s)" == Linux ]]; then
-      sudo yum install jq 
+      if [[ "${LINUX_DISRO}" == "CENTOS" ]]; then
+        sudo yum install jq
+      elif [[ "${LINUX_DISRO}" == "UBUNTU" ]]; then
+        sudo apt-get install jq
+      fi
     elif [[ "$(uname -s)" == Darwin ]]; then 
       brew install jq
     fi
