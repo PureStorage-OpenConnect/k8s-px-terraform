@@ -1,7 +1,7 @@
 # Step by Step Guide to install Azure AKS with Portworx
 
 ```
-If you have completed the GKE admin setup, please go to step #4
+If you have completed the AKS admin setup, please go to step #4
 
 ```
 
