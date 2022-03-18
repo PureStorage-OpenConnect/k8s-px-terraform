@@ -65,6 +65,12 @@ Login using service principal:
 view your subscription account:
 
 	az account list -o table
+	
+Make sure you have your SSH key existing in ~/.ssh/id_rsa 
+If the SSH key is not there then you can create it with the following command:
+> Note: Do not set any passphrase, just press enter when prompted.
+
+	ssh-keygen
 
 ### Step 4. Navigate to scripts folder and Run setup_env.sh <param1> <param2> <param3>
 
