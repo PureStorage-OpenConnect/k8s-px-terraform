@@ -1,9 +1,6 @@
 # Step by Step Guide to install Azure AKS with Portworx
 
-```
-If you have completed the AKS admin setup, please go to step #4
-
-```
+> Note-1: If you have completed the AKS admin setup, please go to step #4
 
 ## PreRequisite
 
@@ -13,6 +10,7 @@ If you have completed the AKS admin setup, please go to step #4
    
 3. Have the role added to the user who is about to create the cluster
 
+4. **Important**: To authenticate azure you will need a Service-Principal json file. If you have completed the AKS admin setup then this json file will be created by the script automatically. If you are not an Admin, then you can ask your account admin to provide Service Principal json file and you will need to save this file in **./k8s-px-terraform/scripts/keys/azure-px-ops-service-principal.json**. If you save it somewhere else or the file name is different, the required values will not be populated automatically in terraform configuration file.
 
 ## Step 1. Installation of required software
 
@@ -39,7 +37,7 @@ If you already have the repo downloaded, git pull command will bring the latest 
     git clone https://github.com/PureStorage-OpenConnect/k8s-px-terraform.git
 ```
 
-### Step 3. Setup Azure Credentials
+### Step 3. Check Azure CLI
 
 ```
 - run "az version"
@@ -56,20 +54,17 @@ Returns the following for example:
 
 ### Login to Azure & Set Subscription
 
-```
-#login and follow prompts
-az login 
+Make sure the json file **k8s-px-terraform/scripts/keys/azure-px-ops-service-principal.json** is available.
 
-# view and select your subscription account
+Login using service principal:
 
-az account list -o table
+> Note: You will find the  <appid> <password> and <tenant> for next command in the service principal json file.
 
-Use the below commands when you have more then one subscription
+	az login --service-principal -u <appid> --password <password-or-path-to-cert> --tenant <tenant>
 
-SUBSCRIPTION=<id>
-az account set --subscription $SUBSCRIPTION   
+view your subscription account:
 
-```
+	az account list -o table
 
 ### Step 4. Navigate to scripts folder and Run setup_env.sh <param1> <param2> <param3>
 
