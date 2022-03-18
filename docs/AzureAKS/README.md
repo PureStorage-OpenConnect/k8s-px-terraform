@@ -58,7 +58,7 @@ Make sure the json file **k8s-px-terraform/scripts/keys/azure-px-ops-service-pri
 
 Login using service principal:
 
-> Note: You will find the  <appid> <password> and <tenant> for next command in the service principal json file.
+> Note: You will find the appid, password and tenant for next command in the service principal json file.
 
 	az login --service-principal -u <appid> --password <password-or-path-to-cert> --tenant <tenant>
 
