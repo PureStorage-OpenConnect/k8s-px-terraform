@@ -98,7 +98,7 @@ Edit the file - vi or nano terraform.tfvars and replace the mandatory parameters
 azure_location                 = "AZURE_LOCATION_ID" //ex: eastus - auto-populates based on the setup_env.sh parameter
 resource_group                 = "demo-res-grp"      // prepends with px-
 
-cluster_name                   = "px-test-cluster1"
+cluster_name                   = "pxtest-cluster1" //First 5 characters cannot contain symbols that are not letters or numbers
 k8s_version                    = "1.21.7"
 azure_instance_type            = "standard_e4-2ds_v5"
 number_of_nodes                = "3"
