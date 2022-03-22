@@ -12,7 +12,7 @@
 
 4. **Important**: To authenticate azure you will need a Service-Principal json file. If you have completed the AKS admin setup then this json file will be created by the script automatically. If you are not an Admin, then you can ask your account admin to provide Service Principal json file and you will need to save this file in **./k8s-px-terraform/scripts/keys/azure-px-ops-service-principal.json**. If you save it somewhere else or the file name is different, the required values will not be populated automatically in terraform configuration file.
 
-## Step 1. Installation of required software
+### Step 1. Installation of required software
 
 This repo contains scripts/prereq.sh file that will install all the required softwares based on the OS (tested on MacOS and Ubuntu)
 
@@ -74,6 +74,7 @@ If the SSH key is not there then you can create it with the following command:
 
 ### Step 4. Navigate to scripts folder and Run setup_env.sh <param1> <param2> <param3>
 
+
 ```
 ./setup_env.sh <Provider> <AcctID-UniqueIdForCluster> <ZoneName>
 
@@ -84,6 +85,7 @@ You will be be navigated to a new bash shell with all the required files copied 
 All parameters needs to be entered in "TERRAFORM.TFVARS" file
 
 ```
+
 ### Step 5. Configure terraform.tfvars [parameters]
 	
 Please use the below command to find list of Azure regions and availability zones list
@@ -136,10 +138,7 @@ The following two files are generated:
 1. A new kube config file will be created at ~/.kube/aks_[your-cluster-name].
 2. A new ssh pem key file will be downloaded for ssh'ing to the nodes with username "azureuser"
 
-```
 For extra reference you can also take a look at the Microsoft Docs: [here](https://github.com/MicrosoftDocs/azure-docs/blob/master/articles/aks/kubernetes-service-principal.md) </br>
-```
-
 
 ###  Step 7. Check if everything is up and ready:
 
