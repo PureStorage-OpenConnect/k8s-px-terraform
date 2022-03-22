@@ -63,7 +63,7 @@ mkdir -p ~/.kube
 mkdir -p ~/.local/bin
 echo "Setting up kubectl and kube-config file..."
 cp -f "${kbCtl}"          ~/.local/bin/kubectl
-cp -f "${vKubeConfig}"    ~/.kube/config
+cp -f "${vKubeConfig}"    ~/.kube/${SETUP_ENV}_${PX_CLUSTER_NAME}
 cp -f "${vKubeConfig}"    ./kube-config-file
 
 sleep 30

@@ -11,7 +11,7 @@ display_help() {
   echo "$(date) -->  AWS        for example: ./setup_env.sh aws <accout-placeholder> us-west-2"
   echo "$(date) -->             for example: ./setup_env.sh aws 1234567 global [Note: requires Admin privileges to create Group, policy etc]"
   echo "$(date) -->  GCloud     for example: ./setup_env.sh gcloud dev us-east4"
-  echo "$(date) -->  Azure      for example: ./setup_env.sh azure dev us-east4"
+  echo "$(date) -->  Azure      for example: ./setup_env.sh azure dev eastus"
   echo "$(date) -->  VM         for example: ./setup_env.sh vm cluster01 ps-lab-01"
   echo "$(date) -->  BareMetal  for example: ./setup_env.sh baremetal cluster01 ps-lab-01"
   echo
@@ -113,7 +113,6 @@ elif [[ $CLOUD_ENV == "vm" || $CLOUD_ENV == "baremetal" ]]; then
     exit 1;
   fi
   
-  #Create the directory to host the terraform for the region
   printf "Checking connectivity using SSH..."
   vRETURN=$(for i in $vHOSTS ;do ssh ${vSSH_USER}@${i} 'printf $(hostname -f)';printf ",${i} " ; done | xargs)
   cat "${TF_DIR}/cluster-config-vars.template" | \
@@ -121,6 +120,11 @@ elif [[ $CLOUD_ENV == "vm" || $CLOUD_ENV == "baremetal" ]]; then
   sed "s,XX_SSH_USER_XX,${vSSH_USER},g" | \
   sed "s,XX_CLUSTER_NAME_XX,${CLOUD_ACCT},g" > ${TF_DIR}/cluster-config-vars
   rm ${TF_DIR}/cluster-config-vars.template
+
+  cat "${TF_DIR}/vars.template" | \
+  sed "s,XX_SETUP_ENV_XX,${CLOUD_ENV},g" > ${TF_DIR}/vars
+  rm ${TF_DIR}/vars.template
+
   chmod -R ug+x ${TF_DIR}
   printf "Successful\n\n"
 else 
