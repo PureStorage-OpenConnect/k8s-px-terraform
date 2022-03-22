@@ -87,35 +87,36 @@ All parameters needs to be entered in "TERRAFORM.TFVARS" file
 ### Step 5. Configure terraform.tfvars [parameters]
 	
 Please use the below command to find list of Azure regions and availability zones list
-	
-```	
-	 az account list-locations -o table
+
+```
+az account list-locations -o table
 ```
 	
 Edit the file - vi or nano terraform.tfvars and replace the mandatory parameters to create the cluster
+
+> Note: Make sure to update the value of **resource_group** variable.
 	
 ```
 azure_location                 = "AZURE_LOCATION_ID" //ex: eastus - auto-populates based on the setup_env.sh parameter
-resource_group                 = "demo-res-grp"      // prepends with px-
+resource_group                 = "res-grp"           //Replace this value with your own resource group name. Prepends with px-
 
-cluster_name                   = "pxtest-cluster1" //First 5 characters cannot contain symbols that are not letters or numbers
+cluster_name                   = "pxtest-cluster1"   //First 5 characters cannot contain symbols that are not letters or numbers
 k8s_version                    = "1.21.7"
 azure_instance_type            = "standard_e4-2ds_v5"
 number_of_nodes                = "3"
 
-subscription_id                = "6bz78c23-29cd-4567-8ab1-64d120abcd21"
-service_principle_id           = "SvcPID"    //reads from az cli login user authentication
-service_principle_key          = "SvcPKEY"   //reads from az cli login user authentication
-tenant_id                      = "SvcTID"    //reads from az cli login user authentication
-app_id                         = "SvcAPPID"  //reads from az cli login user authentication
+subscription_id                = "Subscription_ID"  //Reads from az cli login user authentication
+service_principle_id           = "SvcPID"           //Reads from keys/service a/c file.
+service_principle_key          = "SvcPKEY"          //Reads from keys/service a/c file.
+tenant_id                      = "SvcTID"           //Reads from keys/service a/c file.
+app_id                         = "SvcAPPID"         //Reads from keys/service a/c file.
 
 px_operator_version            = "1.6.1"
 px_kvdb_device_storage_type    = "Premium_LRS"
 px_kvdb_device_storage_size    = "150"
 px_cloud_storage_size          = "30"
 px_cloud_storage_type          = "Premium_LRS"
-px_storage_cluster_version     = "2.8.1.2"
-
+px_storage_cluster_version     = "2.9.0"
 ```
 
 ### Step 6. Execute
