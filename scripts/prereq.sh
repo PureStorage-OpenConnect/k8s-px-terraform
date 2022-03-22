@@ -133,7 +133,7 @@ installDocker() {
     if [[ "$(uname -s)" == Linux ]]; then
       # Install Docker
       if [[ "${LINUX_DISRO}" == "UBUNTU" ]]; then
-        sudo apt-get install -y uidmap
+        sudo apt-get install -qy uidmap
       fi
       curl -fsSL https://get.docker.com -o /tmp/get-docker.sh
       sudo sh /tmp/get-docker.sh
@@ -186,9 +186,9 @@ installJQ() {
     echo "JQ not found.. installing now.."
     if [[ "$(uname -s)" == Linux ]]; then
       if [[ "${LINUX_DISRO}" == "CENTOS" ]]; then
-        sudo yum install jq
+        sudo yum install jq -qy
       elif [[ "${LINUX_DISRO}" == "UBUNTU" ]]; then
-        sudo apt-get install jq
+        sudo apt-get install jq -qy
       fi
     elif [[ "$(uname -s)" == Darwin ]]; then 
       brew install jq
@@ -205,9 +205,9 @@ install_pip3() {
     echo "pip3 not found.. installing now.."
     if [[ "$(uname -s)" == Linux ]]; then
       if [[ "${LINUX_DISRO}" == "CENTOS" ]]; then
-        sudo yum install python3-pip
+        sudo yum install python3-pip -qy
       elif [[ "${LINUX_DISRO}" == "UBUNTU" ]]; then
-        sudo apt-get install python3-pip
+        sudo apt-get install python3-pip -qy
       fi
     elif [[ "$(uname -s)" == Darwin ]]; then 
       brew install python3
@@ -290,23 +290,23 @@ echo "$(date) - Cloud Environment chosen is : ${CLOUD_ENV}"
 echo ''
 installBasicUtils
 echo ''
-installTerraform
-echo ''
-installDocker
-echo ''
 installGIT
-echo ''
-installAWSCli
-echo ''
-installGoogleSDK
-echo ''
-installAzureCLI
 echo ''
 installKubeCTL
 echo ''
 installJQ
 echo ''
 install_pip3
+echo ''
+installTerraform
+echo ''
+installDocker
+echo ''
+installAWSCli
+echo ''
+installGoogleSDK
+echo ''
+installAzureCLI
 
 echo "$(date) - Script completed successfully"
 
