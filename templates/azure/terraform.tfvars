@@ -1,7 +1,7 @@
 azure_location                 = "AZURE_LOCATION_ID" //eastus
-resource_group                 = "demo-res-grp"      // prepends with px- Replace this value with your own resource group name
+resource_group                 = "res-grp"           //Replace this value with your own resource group name. Prepends with px-
 
-cluster_name                   = "pxtest-cluster1" //First 5 characters cannot contain symbols that are not letters or numbers
+cluster_name                   = "pxtest-cluster1"   //First 5 characters cannot contain symbols that are not letters or numbers
 k8s_version                    = "1.21.7"
 azure_instance_type            = "standard_e4-2ds_v5"
 number_of_nodes                = "3"

@@ -76,7 +76,7 @@ elif [[ $CLOUD_ENV == "gcloud" ]]; then
   sed -ie "s/google_region_replaceme/${CLOUD_REGION}/g" "${TF_DIR}/terraform.tfvars"
   
 elif [[ $CLOUD_ENV == "azure" ]]; then
-  SSH_PublicKey=$(cat ~/.ssh/id_rsa.pub)
+  #SSH_PublicKey=$(cat ~/.ssh/id_rsa.pub)
   SUBSCRIPTION_ID="$(az account show | jq -r '.id')"
   SERVICE_PRINCIPAL_JSON=$(cat ./keys/azure-px-ops-service-principal.json)
   SERVICE_PRINCIPAL_APPID=$(echo "$SERVICE_PRINCIPAL_JSON" | jq -r '.appId')
