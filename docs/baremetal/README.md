@@ -10,16 +10,18 @@ We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx
 - You will need to use a machine as controller. This conroller must be able to connect to all the machines with password-less ssh (Steps are provided to setup passwordless ssh).
 - The ssh user must be the root user. If you want to use another user account with sudo privileges make sure the user is able to run sudo commands without requiring to enter the password.
 - All machines including the controller must have SELinux disabled. If that was enabled and you have disabled it make sure to restart the machines. You can use following commands to check and disable it:
+  
+  > Note: You will need to run the following commands on each host including the controller one.
 
-	First SSH to the nodes:
+	**First SSH to the nodes:**
 	
 		ssh <user>@<hostname or IP>
 
-	Then check SELinux:
+	**Then check SELinux:**
 	
 		getenforce
 
-	If is not disabled, use these commands to disable and restart the machine:
+	**If is not disabled, use these commands to disable and restart the machine:**
 	
 		setenforce 0
 		sed -i --follow-symlinks 's/SELINUX=enforcing/SELINUX=disabled/g' /etc/sysconfig/selinux
