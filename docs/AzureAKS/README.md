@@ -133,7 +133,7 @@ This completes the creation of AKS cluster with Portworx, and the output of clus
 Note: 
 The following two files are generated:
 
-1. A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
+1. A new kube config file will be created at ~/.kube/aks_[your-cluster-name].
 2. A new ssh pem key file will be downloaded for ssh'ing to the nodes with username "azureuser"
 
 ```
