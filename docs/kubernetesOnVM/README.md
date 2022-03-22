@@ -47,7 +47,20 @@ Conroller is the machine where you will be running all the terraform commands. H
 		curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 		sudo install -o root -g root -m 0755 kubectl ~/bin/kubectl
 
+- Install pip3: (Skip if already installed):
 
+	**CentOS:**
+	
+		sudo yum install python3-pip -qy
+		
+	**Ubuntu:**
+	
+		sudo apt-get install python3-pip -qy
+		
+	**macOS:**
+	
+		brew install python3
+		
 - Set environment variables with ssh user and the IP addresses of all the hosts separated by white space. For example if you have 5 machines configured with these IPs '10.21.152.94, 10.21.152.95, 10.21.152.96, 10.21.152.97 and 10.21.152.98' and you are going to use 'root' user, hare are the commands to setup the variables:
 
 		export vHOSTS="10.21.152.94 10.21.152.95 10.21.152.96 10.21.152.97 10.21.152.98";
