@@ -225,7 +225,11 @@ checkRqdAppsAndVars() {
   else
      echo "KubeCTL found"
   fi
-
+  if ! jq --version; then
+     echo "jq Missing"
+  else
+     echo "jq found"
+  fi
   if ! pip3 --version > /dev/null 2>&1; then
      echo "pip3 Missing"
   else
