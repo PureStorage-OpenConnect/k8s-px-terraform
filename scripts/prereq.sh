@@ -165,18 +165,18 @@ installGIT() {
 }
 
 installKubeCTL() {
-  echo 'Checking KubeCTL version'
+  echo 'Checking kubectl version'
     if ! kubectl version --client=true; then
-    echo "KubeCTL not found.. installing now.."
+    echo "kubectl not found.. installing now.."
     if [[ "$(uname -s)" == Linux ]]; then
       curl -L "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" -o /tmp/kubectl
       sudo install -o root -g root -m 0755 /tmp/kubectl /usr/local/bin/kubectl
     elif [[ "$(uname -s)" == Darwin ]]; then 
-      brew install git
+      brew install kubectl
     fi
-    echo 'KubeCTL Installation is completed...'
+    echo 'kubectl Installation is completed...'
   else
-    echo 'KubeCTL found.. no updates are made'
+    echo 'kubectl found.. no updates are made'
   fi
 }
 
@@ -199,16 +199,39 @@ installJQ() {
   fi
 }
 
-source ~/.bashrc
+install_pip3() {
+  echo 'Checking pip3 version'
+    if ! pip3 --version; then
+    echo "pip3 not found.. installing now.."
+    if [[ "$(uname -s)" == Linux ]]; then
+      if [[ "${LINUX_DISRO}" == "CENTOS" ]]; then
+        sudo yum install python3-pip
+      elif [[ "${LINUX_DISRO}" == "UBUNTU" ]]; then
+        sudo apt-get install python3-pip
+      fi
+    elif [[ "$(uname -s)" == Darwin ]]; then 
+      brew install python3
+    fi
+    echo 'pip3 Installation is completed...'
+  else
+    echo 'pip3 found.. no updates are made'
+  fi
+}
 
 checkRqdAppsAndVars() {
   #Check required Apps - 
-  if ! kubectl version --client=true > /dev/null 2>&1; then
+  if ! kubectl version --client > /dev/null 2>&1; then
      echo "KubeCTL Missing"
   else
      echo "KubeCTL found"
   fi
-  
+
+  if ! pip3 --version > /dev/null 2>&1; then
+     echo "pip3 Missing"
+  else
+     echo "pip3 found"
+  fi
+
   if ! git --version > /dev/null 2>&1; then
     echo "GIT Missing"
   else
@@ -242,8 +265,10 @@ checkRqdAppsAndVars() {
   if ! gcloud version > /dev/null 2>&1; then
     echo "Google Cloud SDK missing"
   else
-     echo "Google Cloud SDK found"
+    echo "Google Cloud SDK found"
   fi
+
+  source ~/.bashrc
 
   #Check variables that are required to set
   if [[ -z $vHOSTS ]]; then echo "Env Variable Missing: the vHOSTS environment variable not set. Please set it by assigning all host IPs separated by white space"; fi
@@ -260,7 +285,6 @@ elif [[ $ARG1 = "check" ]]; then
   checkRqdAppsAndVars
   exit 0;
 fi
-
 
 echo "$(date) - Cloud Environment chosen is : ${CLOUD_ENV}"
 echo ''
@@ -281,6 +305,8 @@ echo ''
 installKubeCTL
 echo ''
 installJQ
+echo ''
+install_pip3
 
 echo "$(date) - Script completed successfully"
 
