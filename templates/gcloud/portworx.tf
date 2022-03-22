@@ -7,6 +7,7 @@ resource "null_resource" "install_portworx" {
       fi
       sleep 30
       gcloud container clusters get-credentials --region ${var.google_zone} ${var.cluster_name}
+      mkdir -p ~/.kube
       cp $PWD/kube-config-file  ~/.kube/gke_${var.cluster_name}
       sleep 5
       chmod +x "../../../../scripts/gke/installPortworx.sh"

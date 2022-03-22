@@ -7,6 +7,7 @@ resource "null_resource" "install_portworx" {
       fi
       sleep 30
       aws eks --region ${var.region} update-kubeconfig --name ${local.name}
+      mkdir -p ~/.kube
       cp "$PWD/kube-config-file"  ~/.kube/eks_${local.name}
       sleep 5
       chmod +x "../../../../scripts/eks/installPortworx.sh"
