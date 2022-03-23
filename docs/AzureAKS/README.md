@@ -96,7 +96,7 @@ az account list-locations -o table
 	
 Edit the file - vi or nano terraform.tfvars and replace the mandatory parameters to create the cluster
 
-> Note: Make sure to update the value of **resource_group** variable.
+> Note: Make sure to update the value of **resource_group** variable each time you create a new cluster
 	
 ```
 azure_location                 = "AZURE_LOCATION_ID" //ex: eastus - auto-populates based on the setup_env.sh parameter
