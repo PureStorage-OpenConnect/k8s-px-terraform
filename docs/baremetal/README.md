@@ -93,7 +93,7 @@ Navigate to the 'scripts' folder where all the scripts are saved:
 
 	./disable-firewall_CentOS.sh --disable
 	
-Note: For Ubuntu the firewall is open by default and you do not need to run any script for it.
+> Note: For Ubuntu, the firewall is open by default and you do not need to run the script for it.
 
 Execute the script to setup environment by replacing values accordingly:
 
