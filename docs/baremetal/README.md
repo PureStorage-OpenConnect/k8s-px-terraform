@@ -3,7 +3,7 @@
 We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx on these machines.
 
 ### Pre-requisites:
-
+- An installation [shell script](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/main/scripts/prereq.sh) has been shipped in this package. This script will install all required prerequisites softwares/packages for all environments like gcloud/aws/azure/baremetal if they are not already installed. The script is tested on MacOS, CentOS and Ubuntu systems. See the [PreRequisites](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/blob/main/README.md#prerequisites) section on the main readme for more details. If you do not want to install everything, the steps are provided below for the packages required by the current environment only.
 - Machines running with CentOS or Ubuntu and the configuration must meet the minimum [requirements for Portworx](https://docs.portworx.com/start-here-installation/). Portworx requires minimum 3 worker nodes to run. All machines must have 4CPUs and 4GB of RAM.
 - Additional (unmounted) hard drives attached to the worker nodes for the Portworx storage and kvdb device.
 - Disable the firewall so machines can connect to each other (A script is provided for CentOS to disable the firewall). If you do not want to  disable the firewall then you can allow the TCP ports at 9001-9022 and UDP port at 9002. Read the network section for more information in [portworx documentation](https://docs.portworx.com/start-here-installation/).
@@ -34,32 +34,39 @@ Conroller is the machine where you will be running all the terraform commands. H
 > Note: It can be one of the machines you are going to use for kubernetes cluster.
 	 
 - Login to your controller machine with ssh.
+- Install basic utilities:
+
+	**CentOS:**
+	
+		sudo yum install wget git unzip python3-pip -qy
+		
+	**Ubuntu:**
+	
+		sudo apt-get install wget git unzip python3-pip -qy
+		
+	**macOS:**
+	
+		brew install wget git unzip python3
+
 - Install Terraform (Versoin: 1.1.4). (Skip if already installed)
+
+	**Linux:**
 	 
 		wget -q -O/tmp/terraform.zip https://releases.hashicorp.com/terraform/1.1.4/terraform_1.1.4_linux_amd64.zip
-		unzip -q -d ~/bin /tmp/terraform.zip
-		terraform -v
+		sudo unzip -q -d /usr/bin /tmp/terraform.zip
+		
+	**macOS:**
 
+	**Verify:**
+
+		terraform -v
+		
 	Note: The last command `terraform -v` should return the terraform version.  If there is any issue' checkout the [terraform installation guide](https://learn.hashicorp.com/tutorials/terraform/install-cli) as per your environment.
 	
 - Install kubectl: (Skip if already installed):
 
 		curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
-		sudo install -o root -g root -m 0755 kubectl ~/bin/kubectl
-
-- Install pip3: (Skip if already installed):
-
-	**CentOS:**
-	
-		sudo yum install python3-pip -qy
-		
-	**Ubuntu:**
-	
-		sudo apt-get install python3-pip -qy
-		
-	**macOS:**
-	
-		brew install python3
+		sudo install -o root -g root -m 0755 kubectl /usr/bin/kubectl
 		
 - Set environment variables with ssh user and the IP addresses of all the hosts separated by white space. For example if you have 5 machines configured with these IPs '10.21.152.94, 10.21.152.95, 10.21.152.96, 10.21.152.97 and 10.21.152.98' and you are going to use 'root' user, hare are the commands to setup the variables:
 
