@@ -57,6 +57,9 @@ Conroller is the machine where you will be running all the terraform commands. H
 		
 	**macOS:**
 
+		wget -q -O/tmp/terraform.zip https://releases.hashicorp.com/terraform/1.1.4/terraform_1.1.4_darwin_amd64.zip
+		sudo unzip -q -d /usr/local/bin /tmp/terraform.zip
+
 	**Verify:**
 
 		terraform -v
@@ -65,13 +68,30 @@ Conroller is the machine where you will be running all the terraform commands. H
 	
 - Install kubectl: (Skip if already installed):
 
+	**Linux:**
+	
 		curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl"
 		sudo install -o root -g root -m 0755 kubectl /usr/bin/kubectl
+		
+	**macOS:**
+		
+		brew install kubectl
 		
 - Set environment variables with ssh user and the IP addresses of all the hosts separated by white space. For example if you have 5 machines configured with these IPs '10.21.152.94, 10.21.152.95, 10.21.152.96, 10.21.152.97 and 10.21.152.98' and you are going to use 'root' user, hare are the commands to setup the variables:
 
 		export vHOSTS="10.21.152.94 10.21.152.95 10.21.152.96 10.21.152.97 10.21.152.98";
 		export vSSH_USER="root"
+
+- Check and create ssh key-pair (You can skip this if you already have ssh key-pair):
+	
+	You can check with the following command:
+	
+		ls -lrth ~/.ssh/id_rsa ~/.ssh/id_rsa.pub
+
+	If it did not list the files then you can use the following command to create one, else you have the key-pair and you can skip the next command.
+	The command will ask for the file location and passphrase just press enter for both, because we will create keys at default location with no passphrase:
+		
+		ssh-keygen
 
 - Setup and test password-less ssh:
 	Following command will attempt to add your ssh key to the **authorized_keys** file of all your hosts provided in vHOSTS variable. It will ask for the password for each host (once for each host).
