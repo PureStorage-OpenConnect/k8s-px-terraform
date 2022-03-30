@@ -160,8 +160,7 @@ terraform apply "plan.out"
 
 This completes the creation of EKS cluster with Portworx, and the output of cluster name is generated.
 
-> Note: A new kube config file will be created at ~/.kube/config, and the existing kube config file will be backed up with date and time stamp.
-
+> Note: A new kube config file will be created at ~/.kube/[Prvider_clustername], and the default kube config file will be backed up with date and time stamp.
 
 ###  Step 7. Check if everything is up and ready:
 
