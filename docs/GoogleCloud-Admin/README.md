@@ -35,7 +35,7 @@ Execute the script "setup_gcp_project.sh" located in the scripts folder
 
 The script will ask to provide "Billing Account Number" that needs to be associated with the project if you were to choose to select the new project
 
-Reference to the log file during one of the setup run: https://raw.githubusercontent.com/PureStorage-OpenConnect/k8s-px-terraform/main/docs/GoogleCloud-Admin/Setup.log?token=GHSAT0AAAAAABRTTPWKJWYGRN2FI3WAYHVSYROVFRQ
+Reference to the [log file](https://github.com/PureStorage-OpenConnect/k8s-px-terraform/raw/main/docs/GoogleCloud-Admin/Setup.log) during one of the setup run.
 
 The below script will ask for billing id and project id. Both of these can be found from the Google console. See image 1 and image 2.
 
