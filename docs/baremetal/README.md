@@ -7,11 +7,11 @@ We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx
 - Machines running with CentOS or Ubuntu and the configuration must meet the minimum [requirements for Portworx](https://docs.portworx.com/start-here-installation/). Portworx requires minimum 3 worker nodes to run. All machines must have 4CPUs and 4GB of RAM.
 - Additional (unmounted) hard drives attached to the worker nodes for the Portworx storage and kvdb device.
 - Disable the firewall so machines can connect to each other (A script is provided for CentOS to disable the firewall). If you do not want to  disable the firewall then you can allow the TCP ports at 9001-9022 and UDP port at 9002. Read the network section for more information in [portworx documentation](https://docs.portworx.com/start-here-installation/).
-- You will need to use a machine as controller. This conroller must be able to connect to all the machines with password-less ssh (Steps are provided to setup passwordless ssh).
+- You will need to use a machine as jumphost. It must be able to connect to all the machines with password-less ssh (Steps are provided to setup passwordless ssh).
 - The ssh user must be the root user. If you want to use another user account with sudo privileges make sure the user is able to run sudo commands without requiring to enter the password.
-- All machines including the controller must have SELinux disabled. If that was enabled and you have disabled it make sure to restart the machines. You can use following commands to check and disable it:
+- All machines including the jumphost must have SELinux disabled. If that was enabled and you have disabled it make sure to restart the machines. You can use following commands to check and disable it:
   
-  > Note: You will need to run the following commands on each host including the controller one.
+  > Note: You will need to run the following commands on each host including the jumphost one.
 
 	**First SSH to the nodes:**
 	
@@ -28,12 +28,12 @@ We will use Terraform + Kubespray to set up the Kubernetes cluster with Portworx
 		reboot now
 
 ## Steps
-### 1. Setup the controller:
-Conroller is the machine where you will be running all the terraform commands. Here are the steps to prepare it:
+### 1. Setup the jumphost:
+Jumphost is the machine where you will be running all the terraform commands. Here are the steps to prepare it:
 
 > Note: It can be one of the machines you are going to use for kubernetes cluster.
 	 
-- Login to your controller machine with ssh.
+- Login to your jumphost machine with ssh.
 - Install basic utilities:
 
 	**CentOS:**
