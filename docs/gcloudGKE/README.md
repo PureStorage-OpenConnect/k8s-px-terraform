@@ -242,3 +242,18 @@ The Terraform state resource list can be found with the following command
 ```
 
 Note: the terraform destroy command needs to be executed from the same location as terraform apply command. 
+	
+## Additonal Notes:
+
+### How to SSH into the nodes:
+
+```
+To SSH into your GCP nodes follow the steps below:
+
+- Navigate to the Google cloud console.
+- Then select your project from top left drop down menu.
+- In resources section navigate to compute engine
+- Identify the instance you want to login to. Click the name of the instance you want to login to.
+- Click on SSH once inside the instance. Once you click on it a terminal will open. 
+
+``` 
