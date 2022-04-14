@@ -228,3 +228,21 @@ The Terraform state resource list can be found with the following command
 ```
 
 Note: the terraform destroy command needs to be executed from the same location as terraform apply command. 
+	
+
+## Additonal Notes:
+
+### How to SSH into the nodes:
+
+```
+- Navigate to the location where the cluster was created. As part of the cluster creation a new pem file gets generated with the cluster name followed by .pem file
+- Open your terminal and change directory with command cd, where you downloaded the pem file (from step 6)
+- The private key (pem file) must be protected from read and write operations from any other users, SSH will not work in case it is open to read/write by other users
+        Command:
+                $ chmod 0400 ./<ClusterName>.pem
+- To connec to your azure instance/node, enter the following command
+        Command:
+                $ ssh -i /path/<ClusterName>.pem my-instance-user-name@my-instance-IPv4-address
+                $ ssh -i /path/<ClusterName>.pem my-instance-user-name@my-instance-public-dns-name
+
+``` 
