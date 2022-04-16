@@ -139,6 +139,7 @@ cd "${TF_DIR}"
 [ -e terraform.tfvarse ] && rm terraform.tfvarse
 
 #export PS1=$(pwd):$PS1
+export PS1='[\u@\h \w]$ '
 
 echo "Opening a new shell with the Target directory"
 $SHELL;
